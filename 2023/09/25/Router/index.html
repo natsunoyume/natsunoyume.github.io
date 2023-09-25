@@ -1,0 +1,348 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>路由器协议与配置（一） | 夏梦の小屋</title><meta name="author" content="夏梦"><meta name="copyright" content="夏梦"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="路由 什么是路由路由是在任何网络中选择路径的过程  路由器如何工作跟由器根据路由表转发数据包，当数据包到达时，路由器首先在路由表中查找其地址，如果不存在此丢弃此数据包，如果存在，路由器会根据此路由条目的下一跳地址，将数据包转发或移动到网络中的下一个点  路由表路由表（routing table）或称路由择域信息库（RIB, Routing Information Base），是一个存储在路由器或者">
+<meta property="og:type" content="article">
+<meta property="og:title" content="路由器协议与配置（一）">
+<meta property="og:url" content="https://github.com/natsunoyume/natsunoyume.github.io/2023/09/25/Router/index.html">
+<meta property="og:site_name" content="夏梦の小屋">
+<meta property="og:description" content="路由 什么是路由路由是在任何网络中选择路径的过程  路由器如何工作跟由器根据路由表转发数据包，当数据包到达时，路由器首先在路由表中查找其地址，如果不存在此丢弃此数据包，如果存在，路由器会根据此路由条目的下一跳地址，将数据包转发或移动到网络中的下一个点  路由表路由表（routing table）或称路由择域信息库（RIB, Routing Information Base），是一个存储在路由器或者">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20359293%20bell%20cake%20doge_onion%20dress%20elbow_gloves%20elysia_(honkai_impact)%20food%20fruit%20gloves%20honkai_impact%20honkai_(series)%20long_hair%20nopan%20pink_hair%20purple_eyes.jpg">
+<meta property="article:published_time" content="2023-09-25T11:08:39.000Z">
+<meta property="article:modified_time" content="2023-09-25T11:48:21.945Z">
+<meta property="article:author" content="夏梦">
+<meta property="article:tag" content="网络">
+<meta property="article:tag" content="协议">
+<meta property="article:tag" content="路由器">
+<meta property="article:tag" content="路由">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20359293%20bell%20cake%20doge_onion%20dress%20elbow_gloves%20elysia_(honkai_impact)%20food%20fruit%20gloves%20honkai_impact%20honkai_(series)%20long_hair%20nopan%20pink_hair%20purple_eyes.jpg"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/natsunoyume/Image/Web/favicon.png"><link rel="canonical" href="https://github.com/natsunoyume/natsunoyume.github.io/2023/09/25/Router/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '路由器协议与配置（一）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-09-25 19:48:21'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/Web/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20359293%20bell%20cake%20doge_onion%20dress%20elbow_gloves%20elysia_(honkai_impact)%20food%20fruit%20gloves%20honkai_impact%20honkai_(series)%20long_hair%20nopan%20pink_hair%20purple_eyes.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="夏梦の小屋"><span class="site-name">夏梦の小屋</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">路由器协议与配置（一）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-09-25T11:08:39.000Z" title="发表于 2023-09-25 19:08:39">2023-09-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-09-25T11:48:21.945Z" title="更新于 2023-09-25 19:48:21">2023-09-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="路由器协议与配置（一）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h2><ul>
+<li><p>什么是路由<br>路由是在任何网络中选择路径的过程</p>
+</li>
+<li><p>路由器如何工作<br>跟由器根据路由表转发数据包，当数据包到达时，路由器首先在路由表中查找其地址，如果不存在此丢弃此数据包，如果存在，路由器会根据此路由条目的下一跳地址，将数据包转发或移动到网络中的下一个点</p>
+</li>
+<li><p>路由表<br>路由表（<strong>routing table</strong>）或称路由择域信息库（<strong>RIB</strong>, Routing Information Base），是一个存储在路由器或者联网计算机中的电子表格（文件）或类数据库。路由表存储着指向特定网络地址的路径（在有些情况下，还记录有路径的路由度量值）。</p>
+<ul>
+<li>直连网段：路由器接口直接连接的网段;</li>
+<li>非直连网段：路由器接口没有直接连接的网段;</li>
+</ul>
+</li>
+<li><p>路由表路由条目的生成：</p>
+<ul>
+<li>知道如何访问直连网段—-为路由器接口设置IP地址并启用此接口—直连路由</li>
+<li>知道如何访问非连网段—-直接网段信息告诉路由—-静态路由</li>
+<li>让路由器自己去学习——让路由器运行动态路由协议—-动态路由</li>
+<li>直连路由：路由器接口所直连的网段形成的路由信息     （直连网段）</li>
+<li>静态路由：由管理员手动为路由器指定的路由信息    （非直连网段）</li>
+<li>动态路由：路由器通过路由协议学习到的路由信息    （非直连网段）</li>
+</ul>
+</li>
+</ul>
+<h3 id="静态路由"><a href="#静态路由" class="headerlink" title="静态路由"></a>静态路由</h3><p>静态路由一般是在路由器中手动配置的固定路由</p>
+<ul>
+<li><p>配置命令<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020301.jpg"><br>目标网段&#x2F;掩码：数据包要访问的目标网段<br>下一跳：表示此路由的下一跳IP地址。指明数据转发的下一个设备。<br>下一跳地址一定是相邻路由器的接口地址;<br><code>display ip routing-table         //查看路由表</code></p>
+</li>
+<li><p>配置实验<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020302.jpg"></p>
+</li>
+<li><p>路由器的初始化配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[Huawei]sysname  r2 </span><br><span class="line">[Huawei]sysname  r1  </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>路由器的接口配置IP地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[r1]interface GigabitEthernet 0/0/0 </span><br><span class="line">[r1-GigabitEthernet0/0/0]ip address 192.168.2.1 24</span><br><span class="line"></span><br><span class="line">[r1]interface GigabitEthernet 0/0/1 </span><br><span class="line">[r1-GigabitEthernet0/0/1]ip address 192.168.1.254 24</span><br><span class="line"> </span><br><span class="line">[r2]interface GigabitEthernet 0/0/1</span><br><span class="line">[r2-GigabitEthernet0/0/1]ip address 192.168.3.254 24</span><br><span class="line"></span><br><span class="line">[r2]interface GigabitEthernet 0/0/0</span><br><span class="line">[r2-GigabitEthernet0/0/0]ip address 192.168.2.2 24</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置静态路由</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[r1]ip route-static 192.168.3.0 24 192.168.2.2     \\在R1上添加去往3.0的静态路由</span><br><span class="line"></span><br><span class="line">[r2]ip route-static  192.168.1.0 24 192.168.2.1    \\在R2上添加去往1.0的静态路由</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查询路由表中是否有去往192.168.1.1的路</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[r1]display ip routing-table 192.168.1.1  \\查询去往1.1是否有路由表</span><br><span class="line">[r1]display ip routing-table   \\查询整个路由表</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>多路由器配置实验<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020303.jpg"></p>
+</li>
+<li><p>路由器的初始化配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[Huawei]sysname r1  </span><br><span class="line">[Huawei]sysname r2  </span><br><span class="line">[Huawei]sysname r3 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>路由器的接口配置IP地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[r3]interface GigabitEthernet 0/0/0</span><br><span class="line">[r3-GigabitEthernet0/0/0]ip address 192.168.1.254 24 </span><br><span class="line"></span><br><span class="line">[r3]interface GigabitEthernet 0/0/1</span><br><span class="line">[r3-GigabitEthernet0/0/1]ip address 192.168.2.1 24 </span><br><span class="line"></span><br><span class="line">[r4]interface GigabitEthernet 0/0/0</span><br><span class="line">[r4-GigabitEthernet0/0/0]ip address 192.168.2.2 24</span><br><span class="line"></span><br><span class="line">[r4]interface GigabitEthernet 0/0/1</span><br><span class="line">[r4-GigabitEthernet0/0/1]ip address 192.168.3.1 24</span><br><span class="line"></span><br><span class="line">[r5]interface GigabitEthernet 0/0/0 </span><br><span class="line">[r5-GigabitEthernet0/0/0]ip address 192.168.4.254 24 </span><br><span class="line"></span><br><span class="line">[r5]interface GigabitEthernet 0/0/1</span><br><span class="line">[r5-GigabitEthernet0/0/1]ip address 192.168.3.2 24  </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置静态路由</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[r3]ip route-static 192.168.4.0 24 192.168.2.2     \\在R3上配置去往4.0的静态路由</span><br><span class="line">[r4]ip route-static 192.168.4.0 24 192.168.3.2     \\在R4上配置去往4.0的静态路由</span><br><span class="line">[r4]ip route-static 192.168.1.0 24 192.168.2.1     \\在R4上配置去往1.0的静态路由</span><br><span class="line">[r5]ip route-static 192.168.1.0 24 192.168.3.1     \\在R5上配置去往1.0的静态路由</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="默认路由"><a href="#默认路由" class="headerlink" title="默认路由"></a>默认路由</h3><p>默认路由（Default route），是静态路由的一种特殊形式，它属于静态路由中的一种。是对IP数据包中的目的地址找不到存在的其他路由时，路由器所选择的路由。默认路由通常会在出口网络中使用。默认路由容易产生路由环路。<br>默认路由的目标网络是<strong>0.0.0.0&#x2F;0.0.0.0 下一条地址</strong><br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020304.jpg"></p>
+<ul>
+<li><p>配置实验<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020305.jpg"></p>
+</li>
+<li><p>路由器的初始化配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[Huawei]sysname r1</span><br><span class="line">[Huawei]sysname r2  </span><br><span class="line">[Huawei]sysname r3  </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>路由器的接口配置IP地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[r3]interface GigabitEthernet 0/0/0 </span><br><span class="line">[r3-GigabitEthernet0/0/0]ip address 192.168.1.254 24 </span><br><span class="line"> </span><br><span class="line">[r3]interface GigabitEthernet 0/0/1</span><br><span class="line">[r3-GigabitEthernet0/0/1]ip address 192.168.2.1 24</span><br><span class="line"> </span><br><span class="line">[r4]interface GigabitEthernet 0/0/0 </span><br><span class="line">[r4-GigabitEthernet0/0/0]ip address 192.168.2.2 24 </span><br><span class="line"></span><br><span class="line">[r4]interface GigabitEthernet 0/0/1 </span><br><span class="line">[r4-GigabitEthernet0/0/1]ip address 192.168.3.1 24 </span><br><span class="line"></span><br><span class="line">[r5]interface GigabitEthernet 0/0/0 </span><br><span class="line">[r5-GigabitEthernet0/0/0]ip address 192.168.4.254 24</span><br><span class="line"></span><br><span class="line">[r5]interface GigabitEthernet 0/0/1</span><br><span class="line">[r5-GigabitEthernet0/0/1]ip address 192.168.3.2 24 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置默认路由</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[r3]ip route-static 0.0.0.0 0 192.168.2.2       \\在R3上配置去往3.0 4.0的默认路由</span><br><span class="line">[r4]ip route-static 192.168.4.0 24 192.168.3.2  \\在R4上配置去往4.0的静态路由</span><br><span class="line">[r4]ip route-static 192.168.1.0 24 192.168.2.1  \\在R4上配置去往1.0的静态路由</span><br><span class="line">[r5]ip route-static 0.0.0.0 0 192.168.3.1       \\在R5上配置去往1.0 2.0的默认路由</span><br><span class="line"></span><br><span class="line">如果在R4上也配置默认路由的话：ping 一个网络中没有的地址</span><br><span class="line">[r4]ip route-static 0.0.0.0 0 192.168.2.1       \\在R4上配置去往1.0的默认路由</span><br></pre></td></tr></table></figure></li>
+<li><p><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020306.jpg"></p>
+</li>
+<li><p><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020307.jpg"><br>在两个接口上抓包就可以看到路由环路的数据包<br>TTL从128变为1，说明产生了路由环路</p>
+</li>
+</ul>
+<h3 id="路由转发数据包过程"><a href="#路由转发数据包过程" class="headerlink" title="路由转发数据包过程"></a>路由转发数据包过程</h3><p><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020308.jpg"><br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020309.jpg"><br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020310.jpg"><br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020311.jpg"></p>
+<ul>
+<li>网络层的地址：源IP地址 目标IP地址</li>
+<li>数据链路层的地址：源MAC地址  目标MAC地址</li>
+</ul>
+<p>数据包经由路由转发时源、目的IP地址及MAC地址变化情况</p>
+<ul>
+<li>源IP地址和目标IP地址一致保持不变（NAT为特殊应用，会修改源IP为网关自己外网IP）</li>
+<li>源MAC地址和目标MAC地址是变化的，因为发送端开始不知道目的主机的MAC地址，所以每经过一个路由器MAC地址是变化的</li>
+</ul>
+<h3 id="动态路由"><a href="#动态路由" class="headerlink" title="动态路由"></a>动态路由</h3><p>动态路由协议可以让路由器自动学习到其他路由器的网络，并且网络拓扑发生改变后自动更新路由表。网络管理员只需要配置动态路由协议即可，相比人工指定转发策略，工作量大大减少。</p>
+<h4 id="常见路由协议"><a href="#常见路由协议" class="headerlink" title="常见路由协议"></a>常见路由协议</h4><ul>
+<li>RIP<br>路由信息协议（Route Information Protocol） 是内部网关协议IGP中最先得到广泛使用的协议。RIP是一种分布式的基于距离向量的路由选择协议，是因特网的标准协议，其最大优点就是实现简单，开销较小。</li>
+<li>OSPF<br>开放式最短路径优先（Open Shortest Path First）是一个内部网关协议（Interior Gateway Protocol，IGP），用于在单一自治系统（autonomous system,AS）内决策路由。OSPF提出了“区域（area）”的概念，每个区域中所有路由器维护着一个相同的链路状态数据库（LSDB）。OSPF利用所维护的链路状态数据库，通过最短路径优先算法（SPF算法）计算得到路由表。OSPF的收敛速度较快。</li>
+<li>IS-IS<br>中间系统到中间系统（Intermediate System-to-Intermediate System）路由协议和OSPF相同，IS-IS也使用了“区域”的概念，同样也维护着一份链路状态数据库，通过最短生成树算法（SPF）计算出最佳路径。IS-IS的收敛速度较快。集成化IS-IS协议是ISP骨干网上最常用的IGP协议。</li>
+<li>BGP<br>边界网关协议（Border Gateway Protocol）是运行于 TCP 上的一种自治系统的路由协议。 BGP 是唯一一个用来处理像因特网大小的网络的协议，也是唯一能够妥善处理好不相关路由域间的多路连接的协议。</li>
+</ul>
+<h3 id="动态路由协议类型"><a href="#动态路由协议类型" class="headerlink" title="动态路由协议类型"></a>动态路由协议类型</h3><ul>
+<li>内部网关协议（IGP）：在公司内部运行的协议：RIP&#x2F;ISIS&#x2F;OSPF</li>
+<li>外部网关协议（EGP）：在公司之间运行的协议：BGP</li>
+</ul>
+<h2 id="单臂路由"><a href="#单臂路由" class="headerlink" title="单臂路由"></a>单臂路由</h2><p>单臂路由（<strong>router-on-a-stick</strong>）是指在路由器的一个接口上通过配置子接口的方式，实现原来相互隔离的不同VLAN之间的互联互通。<br>一个物理接口不能对应所有VLAN,也不能同时设置多个IP地址；<br>使用物理接口下的子接口，每个子接口对应一个VLAN,单独一个IP地址。<br>子接口是如何表示的：如：g0&#x2F;0&#x2F;0   子接口g0&#x2F;0&#x2F;0.1 - 4096</p>
+<ul>
+<li><p>配置实验<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020312.jpg"></p>
+</li>
+<li><p>交换机的初始配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[Huawei]sysname sw7</span><br><span class="line">[sw7]vlan batch 10 20</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>交换机连接PC的端口设置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[sw7]interface Ethernet 0/0/1</span><br><span class="line">[sw7-Ethernet0/0/1]port link-type access </span><br><span class="line">[sw7-Ethernet0/0/1]port default vlan 10</span><br><span class="line"></span><br><span class="line">[sw7]interface Ethernet 0/0/2</span><br><span class="line">[sw7-Ethernet0/0/2]port link-type access </span><br><span class="line">[sw7-Ethernet0/0/2]port default vlan 20</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>交换机连接路由器的端口设置 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[sw7]interface Ethernet 0/0/3</span><br><span class="line">[sw7-Ethernet0/0/3]port link-type trunk</span><br><span class="line">[sw7-Ethernet0/0/3]port trunk allow-pass vlan all</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>路由器的初始配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[Huawei]sysname r9 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置路由器的子接口</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[r9]interface GigabitEthernet 0/0/0.10                   \\进入子接口</span><br><span class="line">[r9-GigabitEthernet0/0/0.10]dot1q termination vid 10     \\将此接口关联vlan10</span><br><span class="line">[r9-GigabitEthernet0/0/0.10]ip address 192.168.10.254 24</span><br><span class="line">[r9-GigabitEthernet0/0/0.10]arp broadcast enable         \\开启arp协议</span><br><span class="line"></span><br><span class="line">[r9]interface GigabitEthernet 0/0/0.20                   \\进入子接口</span><br><span class="line">[r9-GigabitEthernet0/0/0.20]dot1q termination vid 20     \\将此接口关联vlan20</span><br><span class="line">[r9-GigabitEthernet0/0/0.20]ip address 192.168.20.254 24 </span><br><span class="line">[r9-GigabitEthernet0/0/0.20]arp broadcast enable         \\开启arp协议</span><br></pre></td></tr></table></figure></li>
+<li><p>配置PC机IP地址及网关，验证不同VLAN之间的通信</p>
+</li>
+</ul>
+<blockquote>
+<p>注意</p>
+<ul>
+<li>和路由器直接相连的接口（物理接口）不能设置IP</li>
+<li>路由器的子接口要记得开启arp广播请求（子接口默认不开启arp）</li>
+</ul>
+</blockquote>
+<p>缺点：</p>
+<ul>
+<li>路由器的一个端口要承载所有VLAN的通信流量，将会产生网络通信瓶颈</li>
+<li>所有子接口全部依托一个物理接口，存在单点故障，而影响VLAN间通信</li>
+</ul>
+<h2 id="VLANIF"><a href="#VLANIF" class="headerlink" title="VLANIF"></a>VLANIF</h2><p>VLANIF（<strong>Virtual Local Area Network Interface</strong>）接口是一种三层的逻辑接口，能实现不同VLAN间，不同网段的用户进行三层互通。每个VLAN对应一个VLANIF接口，在为VLANIF接口配置IP地址后，该接口即可作为本VLAN内用户的缺省网关，对需要跨网段的报文进行基于IP地址的三层转发。</p>
+<ul>
+<li><p>三层交换机配置实验（一）<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020313.jpg"></p>
+</li>
+<li><p>交换机的初始配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[Huawei]sysname sw1  </span><br><span class="line">[sw1]vlan batch 1 2 3  </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>连接PC的端口设置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[sw1]interface GigabitEthernet 0/0/1 </span><br><span class="line">[sw1-GigabitEthernet0/0/1]port link-type access </span><br><span class="line">[sw1-GigabitEthernet0/0/1]port default vlan 1 </span><br><span class="line"></span><br><span class="line">[sw1]interface GigabitEthernet 0/0/2  </span><br><span class="line">[sw1-GigabitEthernet0/0/2]port link-type access  </span><br><span class="line">[sw1-GigabitEthernet0/0/2]port default vlan 2 </span><br><span class="line"></span><br><span class="line">[sw1]interface GigabitEthernet 0/0/3 </span><br><span class="line">[sw1-GigabitEthernet0/0/3]port link-type access  </span><br><span class="line">[sw1-GigabitEthernet0/0/3]port default vlan 3  </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入vlanif接口配置IP地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[sw1]interface Vlanif 1 </span><br><span class="line">[sw1-Vlanif1]ip address 192.168.1.254 24 </span><br><span class="line">[sw1]interface Vlanif 2</span><br><span class="line">[sw1-Vlanif2]ip address 192.168.2.254 24</span><br><span class="line">[sw1]interface Vlanif 3</span><br><span class="line">[sw1-Vlanif3]ip address 192.168.3.254 24  </span><br><span class="line"></span><br><span class="line">[sw1]display  ip routing-table  192.168.2.1  </span><br><span class="line">[sw1]display  ip routing-table 192.168.3.1 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>三层交换机配置实验（二）<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020314.jpg"></p>
+</li>
+<li><p>交换机的初始配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[Huawei]sysname sw2 </span><br><span class="line">[sw2]vlan batch 1 to 5   </span><br><span class="line"></span><br><span class="line">[Huawei]sysname sw3</span><br><span class="line">[sw3]vlan batch 1 to 5</span><br><span class="line"></span><br><span class="line">[Huawei]sysname sw4</span><br><span class="line">[sw4]vlan batch 1 to 5</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>连接PC的端口设置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[sw2]interface Ethernet 0/0/1 </span><br><span class="line">[sw2-Ethernet0/0/1]port link-type access</span><br><span class="line">[sw2-Ethernet0/0/1]port default vlan 1  </span><br><span class="line"></span><br><span class="line">[sw2]interface Ethernet 0/0/2 </span><br><span class="line">[sw2-Ethernet0/0/2]port link-type access</span><br><span class="line">[sw2-Ethernet0/0/2]port default vlan 2  </span><br><span class="line"></span><br><span class="line">[sw2]interface Ethernet 0/0/3</span><br><span class="line">[sw2-Ethernet0/0/3]port link-type access</span><br><span class="line">[sw2-Ethernet0/0/3]port default vlan 3 </span><br><span class="line"></span><br><span class="line">[sw3]interface Ethernet 0/0/1 </span><br><span class="line">[sw3-Etet0/0/1]port link-type access</span><br><span class="line">[sw3-Ethernet0/0/1]port default vlan 4 </span><br><span class="line"></span><br><span class="line">[sw3]interface Ethernet 0/0/2</span><br><span class="line">[sw3-Ethernet0/0/2]port link-type access</span><br><span class="line">[sw3-Ethernet0/0/2]port default vlan 5 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>连接交换机的端口</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">[sw2]interface GigabitEthernet 0/0/1 </span><br><span class="line">[sw2-GigabitEthernet0/0/1]port link-type trunk </span><br><span class="line">[sw2-GigabitEthernet0/0/1]port trunk allow-pass vlan all  </span><br><span class="line"></span><br><span class="line">[sw3]interface GigabitEthernet 0/0/2 </span><br><span class="line">[sw3-GigabitEthernet0/0/2]port link-type trunk </span><br><span class="line">[sw3-GigabitEthernet0/0/2]port trunk allow-pass vlan all   </span><br><span class="line"></span><br><span class="line">[sw4]port-group group-member g0/0/1 g0/0/2</span><br><span class="line">[sw4-port-group]port link-type trunk  </span><br><span class="line">[sw4-port-group]port trunk allow-pass vlan all  </span><br><span class="line"></span><br><span class="line">[sw4]interface Vlanif 1  </span><br><span class="line">[sw4-Vlanif1]ip address 192.168.1.254 24  </span><br><span class="line"></span><br><span class="line">[sw4]interface Vlanif 2 </span><br><span class="line">[sw4-Vlanif2]ip address 192.168.2.254 24  </span><br><span class="line"></span><br><span class="line">[sw4]interface Vlanif 3 </span><br><span class="line">[sw4-Vlanif3]ip address 192.168.3.254 24 </span><br><span class="line"></span><br><span class="line">[sw4]interface Vlanif 4  </span><br><span class="line">[sw4-Vlanif4]ip address 192.168.4.254 24  </span><br><span class="line"></span><br><span class="line">[sw4]interface Vlanif 5</span><br><span class="line">[sw4-Vlanif5]ip address 192.168.5.254 24 </span><br><span class="line"></span><br><span class="line">[sw4]display ip interface brief </span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="浮动路由"><a href="#浮动路由" class="headerlink" title="浮动路由"></a>浮动路由</h2><p>浮动路由指的是配置两条或以上的静态路由，相同的目的地址，不同的下一跳地址，另一条下一跳的优先级低，下一跳链路默认选取链路质量优的（带宽大的）作为主路径，当主路径出现故障时，由带宽较小的备份路径顶替主路径。<br>作用是解决链路单点故障，保持网络的不中断。</p>
+<blockquote>
+<p>注：静态路由默认优先级60，数值越大（范围1-255），优先级越低。</p>
+</blockquote>
+<ul>
+<li><p>配置实验<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020315.jpg"></p>
+</li>
+<li><p>交换机的初始化配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[Huawei]sysname sw1 </span><br><span class="line">[Huawei]sysname sw2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建vlan </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[sw1]vlan batch 10 40  </span><br><span class="line">[sw2]vlan batch 10 40  </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>交换机连接PC及路由器的端口配置 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[sw1]port-group group-member g0/0/1 g0/0/2</span><br><span class="line">[sw1-port-group]port link-type access  </span><br><span class="line">[sw1-port-group]port default vlan 10</span><br><span class="line"></span><br><span class="line">[sw2]port-group group-member g0/0/1 g0/0/2</span><br><span class="line">[sw2-port-group]port link-type access  </span><br><span class="line">[sw2-port-group]port default vlan 40 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>路由器的初始化配置 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[Huawei]sysname r1</span><br><span class="line">[Huawei]sysname r2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>路由器的接口配置IP地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[r1]interface GigabitEthernet 0/0/0 </span><br><span class="line">[r1-GigabitEthernet0/0/0]ip address 192.168.1.254 24</span><br><span class="line">[r1]interface GigabitEthernet 0/0/1</span><br><span class="line">[r1-GigabitEthernet0/0/1]ip address 192.168.2.1 24 </span><br><span class="line">[r1]interface GigabitEthernet 0/0/2</span><br><span class="line">[r1-GigabitEthernet0/0/2]ip address 192.168.3.1 24</span><br><span class="line"></span><br><span class="line">[r2]interface GigabitEthernet 0/0/0</span><br><span class="line">[r2-GigabitEthernet0/0/0]ip address 192.168.4.254 24</span><br><span class="line">[r2]interface GigabitEthernet 0/0/1</span><br><span class="line">[r2-GigabitEthernet0/0/1]ip address 192.168.2.2 24</span><br><span class="line">[r2]interface GigabitEthernet 0/0/2</span><br><span class="line">[r2-GigabitEthernet0/0/2]ip address 192.168.3.2 24 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置静态\浮动路由</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[r1]ip route-static 192.168.4.0 24 192.168.3.2                    \\在R1上添加去往4.0的静态路由</span><br><span class="line">[r1]ip route-static 192.168.4.0 24 192.168.2.2 preference 100     \\在R1上添加去往4.0的浮动路由</span><br><span class="line"></span><br><span class="line">[r2]ip route-static 192.168.1.0 24 192.168.3.1                    \\在R2上添加去往1.0的静态路由</span><br><span class="line">[r2]ip route-static 192.168.1.0 24 192.168.2.1 preference 100     \\在R2上添加去往1.0的浮动路由</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分别在R1 R2上查看路由条目</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[r1]display ip routing-table 192.168.4.1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>模拟主链路出现问题</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[r1]interface GigabitEthernet 0/0/2         \\进去接口0/0/2</span><br><span class="line">[r1-GigabitEthernet0/0/2]shutdown           \\关闭此端口</span><br><span class="line">[r1-GigabitEthernet0/0/2]quit               \\返回</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看路由表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[r1]display ip routing-table 192.168.4.1</span><br></pre></td></tr></table></figure></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://github.com/natsunoyume/natsunoyume.github.io">夏梦</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://github.com/natsunoyume/natsunoyume.github.io/2023/09/25/Router/">https://github.com/natsunoyume/natsunoyume.github.io/2023/09/25/Router/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://github.com/natsunoyume/natsunoyume.github.io" target="_blank">夏梦の小屋</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BD%91%E7%BB%9C/">网络</a><a class="post-meta__tags" href="/tags/%E5%8D%8F%E8%AE%AE/">协议</a><a class="post-meta__tags" href="/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/">路由器</a><a class="post-meta__tags" href="/tags/%E8%B7%AF%E7%94%B1/">路由</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20359293%20bell%20cake%20doge_onion%20dress%20elbow_gloves%20elysia_(honkai_impact)%20food%20fruit%20gloves%20honkai_impact%20honkai_(series)%20long_hair%20nopan%20pink_hair%20purple_eyes.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/09/25/Router-2/" title="路由器协议与配置（二）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20354226%202girls%20blush%20breasts%20brown_hair%20building%20chinese_clothes%20cleavage%20clouds%20food%20kuuus%20leaves%20long_hair%20ponytail%20sky%20twintails%20umbrella%20yellow_eyes.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">路由器协议与配置（二）</div></div></a></div><div class="next-post pull-right"><a href="/2023/09/13/Switch-3/" title="交换机协议与配置（三）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/97911234_p0.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">交换机协议与配置（三）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/09/13/Switch/" title="交换机协议与配置（一）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_106874372_20230405_013728.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-13</div><div class="title">交换机协议与配置（一）</div></div></a></div><div><a href="/2023/09/13/Switch-2/" title="交换机协议与配置（二）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/20230703_005631.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-13</div><div class="title">交换机协议与配置（二）</div></div></a></div><div><a href="/2023/09/13/Switch-3/" title="交换机协议与配置（三）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/97911234_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-13</div><div class="title">交换机协议与配置（三）</div></div></a></div><div><a href="/2023/09/25/Router-2/" title="路由器协议与配置（二）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20354226%202girls%20blush%20breasts%20brown_hair%20building%20chinese_clothes%20cleavage%20clouds%20food%20kuuus%20leaves%20long_hair%20ponytail%20sky%20twintails%20umbrella%20yellow_eyes.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-25</div><div class="title">路由器协议与配置（二）</div></div></a></div><div><a href="/2023/09/25/Router-3/" title="路由器协议与配置（三）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_97032057_20230730_145910.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-25</div><div class="title">路由器协议与配置（三）</div></div></a></div><div><a href="/2023/09/25/Router-5/" title="路由器协议与配置（五）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_91458860_20220322_003350.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-25</div><div class="title">路由器协议与配置（五）</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/Web/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">夏梦</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" href="https://github.com/natsunoyume"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/natsunoyume" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1"><span class="toc-number">1.</span> <span class="toc-text">路由</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1"><span class="toc-number">1.1.</span> <span class="toc-text">静态路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1"><span class="toc-number">1.2.</span> <span class="toc-text">默认路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E8%BD%AC%E5%8F%91%E6%95%B0%E6%8D%AE%E5%8C%85%E8%BF%87%E7%A8%8B"><span class="toc-number">1.3.</span> <span class="toc-text">路由转发数据包过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1"><span class="toc-number">1.4.</span> <span class="toc-text">动态路由</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.4.1.</span> <span class="toc-text">常见路由协议</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.5.</span> <span class="toc-text">动态路由协议类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1"><span class="toc-number">2.</span> <span class="toc-text">单臂路由</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VLANIF"><span class="toc-number">3.</span> <span class="toc-text">VLANIF</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%AE%E5%8A%A8%E8%B7%AF%E7%94%B1"><span class="toc-number">4.</span> <span class="toc-text">浮动路由</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/Router-7/" title="路由器协议与配置（七）"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com - 343865 bandage blonde_hair choker close flowers genshin_impact sarashi shade sketch tattoo underwear yajuu yellow_eyes yoimiya_%28genshin_impact%29.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="路由器协议与配置（七）"/></a><div class="content"><a class="title" href="/2023/09/25/Router-7/" title="路由器协议与配置（七）">路由器协议与配置（七）</a><time datetime="2023-09-25T11:33:04.000Z" title="发表于 2023-09-25 19:33:04">2023-09-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/Router-6/" title="路由器协议与配置（六）"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20342260%20amane_kanata%20angel%20boots%20bow%20chihiro_ayaka%20computer%20game_console%20garter%20gray_hair%20halo%20hololive%20kneehighs%20purple_eyes%20short_hair%20skirt%20socks%20wings.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="路由器协议与配置（六）"/></a><div class="content"><a class="title" href="/2023/09/25/Router-6/" title="路由器协议与配置（六）">路由器协议与配置（六）</a><time datetime="2023-09-25T11:31:07.000Z" title="发表于 2023-09-25 19:31:07">2023-09-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/Router-5/" title="路由器协议与配置（五）"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_91458860_20220322_003350.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="路由器协议与配置（五）"/></a><div class="content"><a class="title" href="/2023/09/25/Router-5/" title="路由器协议与配置（五）">路由器协议与配置（五）</a><time datetime="2023-09-25T11:28:55.000Z" title="发表于 2023-09-25 19:28:55">2023-09-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/Router-4/" title="路由器协议与配置（四）"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_91501751_20220221_134455.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="路由器协议与配置（四）"/></a><div class="content"><a class="title" href="/2023/09/25/Router-4/" title="路由器协议与配置（四）">路由器协议与配置（四）</a><time datetime="2023-09-25T11:25:25.000Z" title="发表于 2023-09-25 19:25:25">2023-09-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/Router-3/" title="路由器协议与配置（三）"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_97032057_20230730_145910.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="路由器协议与配置（三）"/></a><div class="content"><a class="title" href="/2023/09/25/Router-3/" title="路由器协议与配置（三）">路由器协议与配置（三）</a><time datetime="2023-09-25T11:21:37.000Z" title="发表于 2023-09-25 19:21:37">2023-09-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By 夏梦</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

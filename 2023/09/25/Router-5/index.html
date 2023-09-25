@@ -1,0 +1,458 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>路由器协议与配置（五） | 夏梦の小屋</title><meta name="author" content="夏梦"><meta name="copyright" content="夏梦"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="OSPF开放式最短路径优先（Open Shortest Path First，OSPF）是一种路由协议，它属于链路状态的内部网关协议（Interior Gateway Protocol，IGP），运作于自治系统内部。 OSPF 协议属于三层协议，协议号为89。是企业内部使用的动态路由协议，适用于大规模网络，采用的是分层设计，分为骨干区域和非骨干区域 AS 自治系统，一个AS  表示一个区域范围，用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="路由器协议与配置（五）">
+<meta property="og:url" content="https://github.com/natsunoyume/natsunoyume.github.io/2023/09/25/Router-5/index.html">
+<meta property="og:site_name" content="夏梦の小屋">
+<meta property="og:description" content="OSPF开放式最短路径优先（Open Shortest Path First，OSPF）是一种路由协议，它属于链路状态的内部网关协议（Interior Gateway Protocol，IGP），运作于自治系统内部。 OSPF 协议属于三层协议，协议号为89。是企业内部使用的动态路由协议，适用于大规模网络，采用的是分层设计，分为骨干区域和非骨干区域 AS 自治系统，一个AS  表示一个区域范围，用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_91458860_20220322_003350.png">
+<meta property="article:published_time" content="2023-09-25T11:28:55.000Z">
+<meta property="article:modified_time" content="2023-09-25T11:48:56.190Z">
+<meta property="article:author" content="夏梦">
+<meta property="article:tag" content="网络">
+<meta property="article:tag" content="路由器">
+<meta property="article:tag" content="OSFP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_91458860_20220322_003350.png"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/natsunoyume/Image/Web/favicon.png"><link rel="canonical" href="https://github.com/natsunoyume/natsunoyume.github.io/2023/09/25/Router-5/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '路由器协议与配置（五）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-09-25 19:48:56'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/Web/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_91458860_20220322_003350.png')"><nav id="nav"><span id="blog-info"><a href="/" title="夏梦の小屋"><span class="site-name">夏梦の小屋</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">路由器协议与配置（五）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-09-25T11:28:55.000Z" title="发表于 2023-09-25 19:28:55">2023-09-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-09-25T11:48:56.190Z" title="更新于 2023-09-25 19:48:56">2023-09-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="路由器协议与配置（五）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="OSPF"><a href="#OSPF" class="headerlink" title="OSPF"></a>OSPF</h2><p>开放式最短路径优先（Open Shortest Path First，OSPF）是一种路由协议，它属于链路状态的内部网关协议（Interior Gateway Protocol，IGP），运作于自治系统内部。</p>
+<p>OSPF 协议属于三层协议，协议号为89。是企业内部使用的动态路由协议，适用于大规模网络，采用的是分层设计，分为骨干区域和非骨干区域</p>
+<p>AS 自治系统，一个AS  表示一个区域范围，用不同的AS号来区分不同的区分范围</p>
+<h3 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h3><ul>
+<li>OSPFv2：支持IPv4网络</li>
+<li>OSPFv3：支持IPv6网络</li>
+</ul>
+<h3 id="OSPF工作过程"><a href="#OSPF工作过程" class="headerlink" title="OSPF工作过程"></a>OSPF工作过程</h3><h4 id="建立邻接关系"><a href="#建立邻接关系" class="headerlink" title="建立邻接关系"></a>建立邻接关系</h4><ul>
+<li>建立邻居关系</li>
+<li>主&#x2F;从关系协商、DD报文交换</li>
+<li>LSDB同步（LSA请求、LSA传输、LSA应答）</li>
+</ul>
+<h5 id="邻居关系"><a href="#邻居关系" class="headerlink" title="邻居关系"></a>邻居关系</h5><h6 id="建立邻居"><a href="#建立邻居" class="headerlink" title="建立邻居"></a>建立邻居</h6><ul>
+<li>Down(失效状态)：表示最近没有从邻居收到信息，没有启用OSPF的状态</li>
+<li>Attempt(尝试状态)：只有在 NBMA 网络环境中，才会出现 Attempt 状态。没有启用OSPF的状态，OSPF 路由器会定期连续发出 Hello 数据包，对端在邻居失效时间间隔（dead interval）超时前仍然没有回复Hello报文。</li>
+<li>Init(初始状态)：初始化状态，第一次收到对端发来的hello包</li>
+<li>2-Way(双向通信状态)：邻居状态，相互间周期发送hello的状态，将进行DR和BDR的选举<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020354.png"></li>
+</ul>
+<h6 id="数据库交换"><a href="#数据库交换" class="headerlink" title="数据库交换"></a>数据库交换</h6><ul>
+<li>Exstart(信息交换初始状态)：发送DBD报文，选举主从路由器</li>
+<li>Exchange(信息交换状态)：向邻居发送DD数据包来描述其完整的链路状态数据库</li>
+<li>Loading(信息加载状态)：发送LSR报文，请求对方发送缺少的LSA和最新的LSA</li>
+<li>Full：邻居路由器之间已经完成同步过程，邻居路由器形成完全邻接关系<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020355.png"></li>
+</ul>
+<h5 id="报文类型"><a href="#报文类型" class="headerlink" title="报文类型"></a>报文类型</h5><ul>
+<li>hello    周期性发送，用来发现和维持OSPF邻居关系</li>
+<li>DD       用来描述本地LSDB数据库的摘要信息，用于两台设备进行数据库同步</li>
+<li>LSR      根据对方的DD报文里，请求对方发送缺少的LSA和最新的LSA</li>
+<li>LSU      用于向对方发送其所需要的LSA</li>
+<li>LSACK    用来对收到的LSA进行确认</li>
+</ul>
+<h5 id="DR-BDR"><a href="#DR-BDR" class="headerlink" title="DR &amp; BDR"></a>DR &amp; BDR</h5><p>指定路由器(DR，Designated Router)和备份指定路由器(BDR，Backup Designated Router)</p>
+<p>在广播多路访问网络和NBMA网络上会选举DR和BDR。所有其他路由器只与DR和BDR建立完全邻居关系，其他路由器之间的邻居状态停留在2-Way状态。所有路由器都只将信息发送给DR，由DR将网络链路状态LSA广播出去。</p>
+<p>为了避免因DR失效导致的单点故障，多路访问网络上还将选举BDR。DR失效时，BDR将成为DR，由于网络上其他路由器已经和BDR形成了完全邻接关系，因此可以将DR失效对网络的影响降至最低。</p>
+<h4 id="路由计算"><a href="#路由计算" class="headerlink" title="路由计算"></a>路由计算</h4><p>OSPF采用SPF（Shortest Path First）算法计算路由，可以达到路由快速收敛的目的</p>
+<h3 id="区域（Area）"><a href="#区域（Area）" class="headerlink" title="区域（Area）"></a>区域（Area）</h3><ul>
+<li><p>骨干区域（Backbone Area）<br>骨干区域，Area 0（点分十进制表示为0.0.0.0），是整个OSPF域的核心区域。所有其他非骨干区域必须和骨干区域直接或间接相连。骨干区域的功能是在不同的非骨干区域之间分发路由信息。<br>骨干区域必须是唯一而且连续的，但不需要在物理上连续：它可以使用虚拟连接。<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020356.png"></p>
+</li>
+<li><p>标准区域<br>标准区域是最通用的区域，它传输区域内路由，区域间路由和外部路由<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020357.png"></p>
+</li>
+<li><p>末梢区域（Stub Area）<br>末梢区域不允许AS外部路由通告（AS External LSA，即类型5 LSA）在其内部进行传播的区域。末梢区域的ABR会通告一条默认路由到该区域内所有路由器，任何发往AS外部网络的数据流都将依据默认路由来转发。<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020358.png"></p>
+</li>
+<li><p>完全末梢区域（Totally Stubby Areas）<br>完全末梢区域不允许AS外部路由和区域间汇总路由（Network Summary LSA ，即类3 LSA）在其内部传播。同末梢区域一样，完全末梢区域ABR也会向该区域内所有路由器通告一条默认路由，任何发往其他区域以及AS外部网络的数据流都将依据默认路由来转发。将区域设置为完全末梢区域可以显著的降低路由表条目的数量。<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020360.png"></p>
+</li>
+<li><p>不完全末梢区域（Not-So-Stubby Area，NSSA）<br>非纯末梢区域允许引入AS外部路由并且扩散到其他区域，NSSA区域同时保留AS内的STUB区域的特征。为了使NSSA能够引入AS外部路由，OSPF定义了新的LSA类型，即NSSA External LSA（类型7 LSA）。NSSA ASBR将产生类型7 LSA，并在NSSA区域内传播。NSSA ABR将会把类型7 LSA转换成5类LSA，并传播到其他区域。<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020359.png"></p>
+</li>
+<li><p>完全非纯末梢区域（Totally NSSA）<br>完全非纯末梢区域除了拥有和NSSA相同的特性外，还不允许类型3 LSA在该区域内部传播。完全非纯末梢区域ABR也会向该区域内所有路由器通告一条默认路由。将区域设置为完全非纯末梢区域也会显著的降低路由表条目的数量。<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020361.png"></p>
+</li>
+</ul>
+<h3 id="OSPF路由器类型"><a href="#OSPF路由器类型" class="headerlink" title="OSPF路由器类型"></a>OSPF路由器类型</h3><ul>
+<li><p>内部路由器（Internal Router）<br>该类设备的所有接口都属于同一个OSPF区域。</p>
+</li>
+<li><p>骨干路由器（Backbone Router）<br>该类设备至少有一个接口属于骨干区域。一台骨干路由器也可以同时是ABR或ASBR。</p>
+</li>
+<li><p>区域边界路由器Area Border Router，ABR）<br>该类设备可以同时属于两个以上的区域，但其中一个必须是骨干区域，ABR用来连接骨干区域和非骨干区域。区域边界路由器为每一个与之相连的区域维护一份链路状态数据库，因此区域边界路由器需要比内部路由器更多的内存资源和更高性能的处理器。</p>
+</li>
+<li><p>自治系统边界路由器（Autonomous System Boundary Router，ASBR）<br>与其他AS交换路由信息的设备称为ASBR。自治系统边界路由器（ASBR）用来把从其他路由协议（如BGP、EIGRP、其他进程号的OSPF等）学习到的路由以路由重分发的方式注入到OSPF进程中，从而使得整个OSPF域内的路由器都可以学习到这些路由（除了末梢区域内的路由器）。一台ASBR可以是OSPF域内非末梢区域的任何路由器，它可以是内部路由器、区域边界路由器、骨干路由器。</p>
+</li>
+</ul>
+<h3 id="LSA类型"><a href="#LSA类型" class="headerlink" title="LSA类型"></a>LSA类型</h3><p>OSPF定义了11种LSA，所有类型的LSA都以一个20字节的通用LSA头部开始。这些不同类型的LSA共同描述了OSPF域内的网络拓扑结构。</p>
+<ul>
+<li>Router-LSA（Type1）<br>路由器LSA：每个设备都会产生，描述了设备的链路状态和开销，在所属的区域内传播。</li>
+<li>Network-LSA（Type2）<br>网络LSA：由DR产生，描述本网段的链路状态，在所属的区域内传播。</li>
+<li>Summary-LSA（Type3）<br>汇总LSA：由ABR产生，描述区域内某个网段的路由，并通告给发布或接收此LSA的非Totally STUB或NSSA区域</li>
+<li>ASBR Summary-LSA（Type4）<br>ASBR汇总LSA：由ABR产生，描述到ASBR的路由，通告给除ASBR所在区域的其他相关区域</li>
+<li>AS-External-LSA（Type5）<br>自治系统外部LSA：由ASBR产生，描述到AS外部的路由，通告到所有的区域（除了STUB区域和NSSA区域）</li>
+<li>Group-Membership-LSA（Type6）<br>组成员LSA：是对标准OSPF的一个扩展，使其支持组播路由功能，扩展后的OSPF称之Multicast Open Shortest Path First（MOSPF）</li>
+<li>NSSA LSA（Type7）<br>NSSA外部LSA：由ASBR产生，描述到AS外部的路由，仅在NSSA区域内传播</li>
+<li>Link-Local LSA（Type8）<br>链路本地LSA：专门用于OSPFv3。链路本地LSA包含了每一个接口的链路本地地址和一个IPv6地址栏表</li>
+<li>Opaque LSA（Type9&#x2F;Type10&#x2F;Type11）提供用于OSPF的扩展的通用机制<ul>
+<li>Type9 LSA：仅在接口所在网段范围内传播。</li>
+<li>Type10 LSA：在始发该LSA的区域内传播。用于支持TE的LSA。</li>
+<li>Type11 LSA：在自治域内传播，目前还没有实际应用的例子。</li>
+</ul>
+</li>
+</ul>
+<h4 id="LSA在各区域中的支持情况"><a href="#LSA在各区域中的支持情况" class="headerlink" title="LSA在各区域中的支持情况"></a>LSA在各区域中的支持情况</h4><table>
+<thead>
+<tr>
+<th>区域类型</th>
+<th>Router-LSA（Type1）</th>
+<th>Network-LSA（Type2）</th>
+<th>Summary-LSA（Type3）</th>
+<th>ASBR Summary-LSA（Type4）</th>
+<th>AS-External-LSA（Type5）</th>
+<th>NSSA LSA（Type7）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>标准区域和骨干区域</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Stub区域</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Totally Stub区域</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+<tr>
+<td>NSSA区域</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Totally NSSA区域</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<h3 id="配置实验"><a href="#配置实验" class="headerlink" title="配置实验"></a>配置实验</h3><h4 id="OSPF单区域配置"><a href="#OSPF单区域配置" class="headerlink" title="OSPF单区域配置"></a>OSPF单区域配置</h4><ul>
+<li><p><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020362.png"></p>
+</li>
+<li><p>路由器配置OSPF骨干区域</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">R1:</span><br><span class="line">ospf 1 </span><br><span class="line">area 0.0.0.0 </span><br><span class="line">network 192.168.1.0 0.0.0.255 </span><br><span class="line">network 192.168.12.0 0.0.0.255 </span><br><span class="line"></span><br><span class="line">R2:</span><br><span class="line">ospf 1 </span><br><span class="line">area 0.0.0.0 </span><br><span class="line">network 192.168.12.0 0.0.0.255 </span><br><span class="line">network 192.168.23.0 0.0.0.255 </span><br><span class="line"></span><br><span class="line">R3:</span><br><span class="line">ospf 1 </span><br><span class="line">area 0.0.0.0 </span><br><span class="line">network 192.168.2.0 0.0.0.255 </span><br><span class="line">network 192.168.23.0 0.0.0.255 </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>进程号 ：同一个设备上可以配置不同的进程号 ，不同的进程号代表不同的程序;不同的设备进程号可以不同</p>
+<p>Area 0：代表的是骨干区域</p>
+<p>network：宣告的是之间接口的网段，表名当前接口参与OSPF 计算，能够接收和发送OSPF信息</p>
+</blockquote>
+</li>
+<li><p>查看邻居关系建立信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[R2]dis ospf peer  brief</span><br><span class="line">  OSPF Process 1 with Router ID 192.168.12.2</span><br><span class="line">      Peer Statistic Information</span><br><span class="line">----------------------------------------------------------------------------</span><br><span class="line">Area Id          Interface                        Neighbor id      State    </span><br><span class="line">0.0.0.0          GigabitEthernet0/0/0             192.168.1.254     Full        </span><br><span class="line">0.0.0.0          GigabitEthernet0/0/1             192.168.23.3      Full        </span><br><span class="line">----------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Area ID：表示R1当前建立的邻居关系所在的区域</p>
+<p>Neighbor ID：表示邻居路由器的OSPF Router ID</p>
+<p>State：表示邻居路由器的状态，最终的完美状态是full （完全邻接）-同步数据库</p>
+<p>Router ID：由一个长度为32 bits的字段所定义，是一台路由器在自治系统中的唯一标识，用IPv4地址格式来表示。通过命令行手动配置，如果没有手动配置Router ID，设备会从当前接口的IP地址中自动选取一个作为Router ID</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="OSPF多区域配置"><a href="#OSPF多区域配置" class="headerlink" title="OSPF多区域配置"></a>OSPF多区域配置</h4><ul>
+<li><p><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020363.png"></p>
+</li>
+<li><p>OSPF 配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">[R1]ospf</span><br><span class="line">ospf 1 </span><br><span class="line">area 0.0.0.12 </span><br><span class="line">network 192.168.1.0 0.0.0.255 </span><br><span class="line">network 192.168.12.0 0.0.0.255 </span><br><span class="line"></span><br><span class="line">[R2]ospf </span><br><span class="line">ospf 1 </span><br><span class="line">area 0.0.0.0 </span><br><span class="line">network 192.168.23.0 0.0.0.255 </span><br><span class="line">area 0.0.0.12 </span><br><span class="line">network 192.168.12.0 0.0.0.255                                 </span><br><span class="line"></span><br><span class="line">[R3]ospf 1</span><br><span class="line">ospf 1 </span><br><span class="line">area 0.0.0.0 </span><br><span class="line">network 192.168.23.0 0.0.0.255 </span><br><span class="line">network 192.168.34.0 0.0.0.255 </span><br><span class="line"></span><br><span class="line">[R4]ospf 1</span><br><span class="line">ospf 1 </span><br><span class="line">area 0.0.0.0 </span><br><span class="line">network 192.168.34.0 0.0.0.255 </span><br><span class="line">network 192.168.45.0 0.0.0.255 </span><br><span class="line"></span><br><span class="line">[R5]ospf 1</span><br><span class="line">ospf 1 </span><br><span class="line">area 0.0.0.0 </span><br><span class="line">network 192.168.45.0 0.0.0.255 </span><br><span class="line">area 0.0.0.56 </span><br><span class="line">network 192.168.56.0 0.0.0.255 </span><br><span class="line"></span><br><span class="line">[R6]ospf 1</span><br><span class="line">ospf 1 </span><br><span class="line">area 0.0.0.56 </span><br><span class="line">network 192.168.2.0 0.0.0.255 </span><br><span class="line">network 192.168.56.0 0.0.0.255 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看接口IP地址信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[R6]dis ip int brief</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看路由表信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[R6]dis ip routing-table</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Routing Tables: Public</span><br><span class="line">    Destinations : 15       Routes : 15       </span><br><span class="line">Destination/Mask     Proto     Pre    Cost      Flags       NextHop           Interface</span><br><span class="line">  192.168.2.0/24     Direct     0      0          D      192.168.2.254    GigabitEthernet0/0/0</span><br><span class="line">  192.168.1.0/24      OSPF     10      6          D      192.168.56.5     GigabitEthernet0/0/1</span><br></pre></td></tr></table></figure></li>
+<li><p>查看OSPF信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[R4]dis ospf brief</span><br><span class="line"></span><br><span class="line">  OSPF Process 1 with Router ID 192.168.34.4   //查看当前设备的OSPF进程号为1</span><br><span class="line">    OSPF Protocol Information</span><br><span class="line">RouterID: 192.168.34.4     Border Router:      //当前设备的RID为 192.168.34.4；当前设备不是边界设备</span><br><span class="line">Route Preference: 10           //OSPF 内部优先级为 10 </span><br><span class="line">ASE Route Preference: 150      //OSPF 外部优先级为 150</span><br><span class="line">Area: 0.0.0.0                  //当前设备所在区域为 0</span><br><span class="line">Authtype: None                 //认证类型 ：无</span><br><span class="line">Area interface up count: 2     //区域下开启OSPF 协议的接口有两个</span><br><span class="line">Interface: 192.168.34.4 (GigabitEthernet0/0/0)</span><br><span class="line">Interface: 192.168.45.4 (GigabitEthernet0/0/1)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置OSPF 协议的RID ：<br>RID 路由器的名字（路由器标识）选举规则：</p>
+<ul>
+<li>手动配置：<br>  最常用，在进程后面指定规划好的RID，RID修改的时候要想生效需要重启进程或者重启设备</li>
+<li>自动选举：<br>  如果设备配置了逻辑接口，然后选举逻辑接口IP地址 最大的作为当前设备的RID<br>  如果设备没有配置逻辑接口，选举物理接口IP地址最大的作为RID <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[R1]ospf 1 router-id 1.1.1.1  //重新配置RID</span><br><span class="line">&lt;R1&gt;reset ospf process        //重启进程，修改的RID 才能生效</span><br><span class="line">Warning: The OSPF process will be reset. Continue? [Y/N]:y   </span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h4 id="OSPF-STUB区域配置"><a href="#OSPF-STUB区域配置" class="headerlink" title="OSPF STUB区域配置"></a>OSPF STUB区域配置</h4><ul>
+<li><p>保证外部区域不影响 Area 12 区域<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020364.png"></p>
+</li>
+<li><p>配置R6和R7互通的静态路由</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[R7]ip route-static 192.168.0.0 16 192.168.67.6</span><br><span class="line">[R6]ip route-static 192.168.3.0 24 192.168.67.7</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在R6上 将静态路由引入OSPF 内部</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[R6]ospf 1</span><br><span class="line">[R6-ospf-1]import-route static </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试<br>PC1 ping 通PC3既可 </p>
+</li>
+<li><p>配置末梢区域–STUB<br>此区域不接收外部路由，但是在ABR上会产生一条默认路由，实现区域内部访问外部</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[R1]ospf 1</span><br><span class="line">[R1-ospf-1]area 12</span><br><span class="line">[R1-ospf-1-area-0.0.0.12]stub  //区域内的所有的路由器都要配置</span><br><span class="line">[R2]ospf 1</span><br><span class="line">[R2-ospf-1]area 12</span><br><span class="line">[R2-ospf-1-area-0.0.0.12]stub  //区域内的所有的路由器都要配置</span><br><span class="line">[R2]dis ip routing-table       //查看IP路由表</span><br><span class="line"></span><br><span class="line">Destination/Mask    Proto    Pre    Cost    Flags     NextHop         Interface</span><br><span class="line"></span><br><span class="line">0.0.0.0/0           OSPF      10      2       D      192.168.12.2    GigabitEthernet0/0/0</span><br><span class="line">192.168.2.0/24      OSPF      10      6       D      192.168.12.2    GigabitEthernet0/0/1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置完全末梢区域<br>  不接收外部路由，也不接收其他区域的的路由 ，在ABR上生成一条默认的路由</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[R2]ospf 1</span><br><span class="line">[R2-ospf-1]area 12</span><br><span class="line">[R2-ospf-1-area-0.0.0.12]stub no-summary  //在ABR上，在STUB基础上追加此命令</span><br></pre></td></tr></table></figure></li>
+<li><p>在R1上查找路由表验证前后信息</p>
+</li>
+</ul>
+<h4 id="OSFP-NSSA区域配置"><a href="#OSFP-NSSA区域配置" class="headerlink" title="OSFP NSSA区域配置"></a>OSFP NSSA区域配置</h4><p>NSSA 区域：不接收其他区域产生的外部路由，但是自己区域内部可以接收外部路由<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020365.png"></p>
+<ul>
+<li>配置思路：<ul>
+<li>配置基本IP信息 </li>
+<li>配置企业内网OSPF:  RID  、stub</li>
+<li>配置运营商和R4 静态互联<ul>
+<li>在R4上做路由引入</li>
+</ul>
+</li>
+<li>配置合作公司和R1 静态互联<ul>
+<li>在R1上做路由引入</li>
+</ul>
+</li>
+<li>实现合作公司通过企业内网访问WEB服务器</li>
+<li>测试</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li><p>配置企业内网OSPF</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">R4配置：</span><br><span class="line">ospf 1 router-id 4.4.4.4 </span><br><span class="line">area 0.0.0.0 </span><br><span class="line">  network 192.168.34.0 0.0.0.255 </span><br><span class="line"></span><br><span class="line">R3配置：</span><br><span class="line">ospf 1 router-id 3.3.3.3 </span><br><span class="line">area 0.0.0.0 </span><br><span class="line">  network 192.168.34.0 0.0.0.255 </span><br><span class="line">area 0.0.0.123 </span><br><span class="line">  network 192.168.23.0 0.0.0.255 </span><br><span class="line">  stub //配置STUB 区域</span><br><span class="line"></span><br><span class="line">R2配置：</span><br><span class="line">ospf 1 router-id 2.2.2.2 </span><br><span class="line">area 0.0.0.123 </span><br><span class="line">  network 192.168.12.0 0.0.0.255 </span><br><span class="line">  network 192.168.23.0 0.0.0.255 </span><br><span class="line">  stub //配置STUB 区域</span><br><span class="line"></span><br><span class="line">R1配置：</span><br><span class="line">ospf 1 router-id 1.1.1.1 </span><br><span class="line">area 0.0.0.123 </span><br><span class="line">  network 192.168.12.0 0.0.0.255 </span><br><span class="line">  stub //配置STUB 区域 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>验证：邻居关系正常 FULL 状态</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[R2]DIS ospf peer brief </span><br><span class="line">[R3]DIS ospf peer brief </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>实现企业内网 和 服务器互通</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[R5]IP route-static 192.168.0.0 16 192.168.45.4</span><br><span class="line"></span><br><span class="line">[R4]ip route-static 0.0.0.0 0.0.0.0 192.168.45.5  //去往 192.168.12.0，192.168.23.0，192.168.34.0 网段</span><br><span class="line">[R4-ospf-1]default-route-advertise                //引入默认路由</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>合作公司和企业内网互通</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[R6]IP route-static 192.168.2.0 24 192.168.16.1  //配置静态路由</span><br><span class="line">[R1]ip route-static 192.168.1.0 24 192.168.16.6	 //配置静态路由</span><br><span class="line">[R1]ospf 1</span><br><span class="line">[R1-ospf-1]import-route static  //OSPF引入静态</span><br><span class="line"></span><br><span class="line">[R1]ospf 1</span><br><span class="line">[R1-ospf-1]area 123</span><br><span class="line">[R1-ospf-1-area-0.0.0.123]undo  stub  //在区域123内所有设备上删除 stub	</span><br><span class="line">[R1-ospf-1-area-0.0.0.123]nssa   //在区域123 内所有设备上配置nssa</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看路由表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[R2]dis ip routing-table </span><br><span class="line">  Destination/Mask    Proto     Pre   Cost      Flags     NextHop         Interface</span><br><span class="line"></span><br><span class="line">    0.0.0.0/0         O_NSSA    150     1         D      192.168.23.3    GigabitEthernet0/0/1</span><br><span class="line">    192.168.1.0/24    O_NSSA    150     1         D      192.168.12.1    GigabitEthernet0/0/0</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>配置完NSSA之后，通过查看路由表可知，由ASBR 生成一条nssa外部路由 ；由ABR生成一条去往其他区域的NSSA默认路由。</p>
+<ul>
+<li>配置完全NSSA<br>不接收OSPF外部路由，也不接收OSPF其他区域的路由，但是在NSSA区域内由ASBR可以产生一条访问外网的NSSA外部路由，在ABR上产生一条访问其他区域的默认路由<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[R3]ospf 1</span><br><span class="line">[R3-ospf-1]AREA 123</span><br><span class="line">[R3-ospf-1-area-0.0.0.123]nssa no-summary  //在NSSA 基础，ABR上追加此命令</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="路由汇总"><a href="#路由汇总" class="headerlink" title="路由汇总"></a>路由汇总</h3><p>通过ospf的路由汇总，可以减少路由信息，从而减小路由表的规模，提高设备的性能。ospf路由汇总只能在ABR（区域边界路由器）及ASBR（自治系统边界路由器），ABR汇总的是ospf域内的路由，ASBR汇总的是ospf的域外路由，OSPF对于区域内的路由不能做汇总。</p>
+<ul>
+<li><p>配置实验<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020366.png"></p>
+</li>
+<li><p>R1配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[R1]interface LoopBack 0             //配置逻辑接口</span><br><span class="line">[R1-LoopBack0]ip add 10.10.1.1 24</span><br><span class="line">[R1]int LoopBack 1</span><br><span class="line">[R1-LoopBack1]ip add 10.10.2.2 24</span><br><span class="line">[R1]int LoopBack 2</span><br><span class="line">[R1-LoopBack2]ip add 10.10.3.3 24</span><br><span class="line">[R1]int LoopBack 3</span><br><span class="line">[R1-LoopBack3]ip add 10.10.4.4 24</span><br><span class="line"></span><br><span class="line">ospf 1 router-id 1.1.1.1 </span><br><span class="line">area 0.0.0.12 </span><br><span class="line">  network 192.168.12.0 0.0.0.255 </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Loopback接口<br>逻辑接口是指能够实现数据交换功能但物理上不存在、需要通过配置建立的虚拟接口。Loopback接口一旦被创建，其物理状态和链路协议状态永远是Up。即使该接口上没有配置IP地址。</p>
+</blockquote>
+</li>
+<li><p>R2配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ospf 1 router-id 2.2.2.2 </span><br><span class="line">area 0.0.0.0 </span><br><span class="line">  network 192.168.23.0 0.0.0.255 </span><br><span class="line">area 0.0.0.12 </span><br><span class="line">  network 192.168.12.0 0.0.0.255 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>R3配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ospf 1 router-id 3.3.3.3 </span><br><span class="line">area 0.0.0.0 </span><br><span class="line">  network 192.168.23.0 0.0.0.255 </span><br><span class="line">  network 192.168.34.0 0.0.0.255 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>R4配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ospf 1 router-id 4.4.4.4 </span><br><span class="line">area 0.0.0.0 </span><br><span class="line">  network 192.168.34.0 0.0.0.255 </span><br><span class="line">  network 192.168.45.0 0.0.0.255 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>R5配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ospf 1 router-id 5.5.5.5 </span><br><span class="line">area 0.0.0.0 </span><br><span class="line">  network 192.168.45.0 0.0.0.255 </span><br><span class="line">area 0.0.0.56 </span><br><span class="line">  network 192.168.56.0 0.0.0.255 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>R6配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ospf 1 router-id 6.6.6.6 </span><br><span class="line">area 0.0.0.56 </span><br><span class="line">  network 192.168.56.0 0.0.0.255 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将四个逻辑接口宣告进OSPF</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[R1]ospf 1</span><br><span class="line">[R1-ospf-1]area 12</span><br><span class="line">[R1-ospf-1-area-0.0.0.12]network 10.10.1.0 0.0.0.255</span><br><span class="line">[R1-ospf-1-area-0.0.0.12]network 10.10.2.0 0.0.0.255	</span><br><span class="line">[R1-ospf-1-area-0.0.0.12]network 10.10.3.0 0.0.0.255</span><br><span class="line">[R1-ospf-1-area-0.0.0.12]network 10.10.4.0 0.0.0.255</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在ABR上做路由汇总，减少路由条，提高目标区域稳定性（将具有相同前缀的进行汇总）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[R2]ospf 1</span><br><span class="line">[R2-ospf-1]area 12</span><br><span class="line">[R2-ospf-1-area-0.0.0.12]abr-summary 10.10.0.0 255.255.0.0  //直接写汇总后的网段和掩码</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在其他区域看路由表的路由进行验证</p>
+</li>
+</ul>
+<hr>
+<ul>
+<li><p>ASBR–外部路由汇总</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[R6]int LoopBack 1                  //配置逻辑接口</span><br><span class="line">[R6-LoopBack1]ip add 10.60.1.1 24</span><br><span class="line">[R6]int LoopBack 2</span><br><span class="line">[R6-LoopBack2]ip add 10.60.2.2 24</span><br><span class="line">[R6]int LoopBack 3</span><br><span class="line">[R6-LoopBack3]ip add 10.60.3.3 24</span><br><span class="line">[R6]int LoopBack 4</span><br><span class="line">[R6-LoopBack4]ip add 10.60.4.4 24</span><br><span class="line"></span><br><span class="line">[R6]ospf </span><br><span class="line">[R6-ospf-1]import-route direct   //引入直连路由</span><br><span class="line">[R6-ospf-1]asbr-summary 10.60.0.0 255.255.0.0   //将引入的具有相同前缀的的外部路由进行汇总</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在其他区域能够看到，汇总后的路由</p>
+</li>
+</ul>
+<hr>
+<ul>
+<li><p>查看邻居关系</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[R2]dis ospf peer  brief </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">  [R4]dis ospf lsdb </span><br><span class="line"></span><br><span class="line">  OSPF Process 1 with Router ID 4.4.4.4</span><br><span class="line">    Link State Database </span><br><span class="line"></span><br><span class="line">            Area: 0.0.0.0</span><br><span class="line">Type        LinkState ID     AdvRouter          Age  Len   Sequence   Metric</span><br><span class="line">Router       4.4.4.4          4.4.4.4           587   48    8000000B    1       //1类LSA，指的是每个路由器向外通告的信息</span><br><span class="line">Sum-Net     192.168.56.0      5.5.5.5           615   28    80000004    1       //3类LSA，指的是将当前区域的路由信息通告 给其他区域</span><br><span class="line">External     10.60.0.0        6.6.6.6           1727  36    80000001    2       //5类LSA，指的是OSPF以外的路由信息进入到OSPF内部的表示形式</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：<br>3类LSA 是由ABR产生的<br>5类LSA 是由ASBR产生的</p>
+</blockquote>
+</li>
+<li><p>查看路由表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[R3]dis ip routing-table </span><br></pre></td></tr></table></figure></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://github.com/natsunoyume/natsunoyume.github.io">夏梦</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://github.com/natsunoyume/natsunoyume.github.io/2023/09/25/Router-5/">https://github.com/natsunoyume/natsunoyume.github.io/2023/09/25/Router-5/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://github.com/natsunoyume/natsunoyume.github.io" target="_blank">夏梦の小屋</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BD%91%E7%BB%9C/">网络</a><a class="post-meta__tags" href="/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/">路由器</a><a class="post-meta__tags" href="/tags/OSFP/">OSFP</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_91458860_20220322_003350.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/09/25/Router-6/" title="路由器协议与配置（六）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20342260%20amane_kanata%20angel%20boots%20bow%20chihiro_ayaka%20computer%20game_console%20garter%20gray_hair%20halo%20hololive%20kneehighs%20purple_eyes%20short_hair%20skirt%20socks%20wings.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">路由器协议与配置（六）</div></div></a></div><div class="next-post pull-right"><a href="/2023/09/25/Router-4/" title="路由器协议与配置（四）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_91501751_20220221_134455.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">路由器协议与配置（四）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/09/25/Router-6/" title="路由器协议与配置（六）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20342260%20amane_kanata%20angel%20boots%20bow%20chihiro_ayaka%20computer%20game_console%20garter%20gray_hair%20halo%20hololive%20kneehighs%20purple_eyes%20short_hair%20skirt%20socks%20wings.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-25</div><div class="title">路由器协议与配置（六）</div></div></a></div><div><a href="/2023/09/25/Router-2/" title="路由器协议与配置（二）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20354226%202girls%20blush%20breasts%20brown_hair%20building%20chinese_clothes%20cleavage%20clouds%20food%20kuuus%20leaves%20long_hair%20ponytail%20sky%20twintails%20umbrella%20yellow_eyes.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-25</div><div class="title">路由器协议与配置（二）</div></div></a></div><div><a href="/2023/09/25/Router-3/" title="路由器协议与配置（三）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_97032057_20230730_145910.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-25</div><div class="title">路由器协议与配置（三）</div></div></a></div><div><a href="/2023/09/25/Router-4/" title="路由器协议与配置（四）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_91501751_20220221_134455.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-25</div><div class="title">路由器协议与配置（四）</div></div></a></div><div><a href="/2023/09/25/Router-7/" title="路由器协议与配置（七）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com - 343865 bandage blonde_hair choker close flowers genshin_impact sarashi shade sketch tattoo underwear yajuu yellow_eyes yoimiya_%28genshin_impact%29.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-25</div><div class="title">路由器协议与配置（七）</div></div></a></div><div><a href="/2023/09/25/Router/" title="路由器协议与配置（一）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20359293%20bell%20cake%20doge_onion%20dress%20elbow_gloves%20elysia_(honkai_impact)%20food%20fruit%20gloves%20honkai_impact%20honkai_(series)%20long_hair%20nopan%20pink_hair%20purple_eyes.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-25</div><div class="title">路由器协议与配置（一）</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/Web/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">夏梦</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" href="https://github.com/natsunoyume"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/natsunoyume" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#OSPF"><span class="toc-number">1.</span> <span class="toc-text">OSPF</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC"><span class="toc-number">1.1.</span> <span class="toc-text">版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OSPF%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text">OSPF工作过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E9%82%BB%E6%8E%A5%E5%85%B3%E7%B3%BB"><span class="toc-number">1.2.1.</span> <span class="toc-text">建立邻接关系</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%82%BB%E5%B1%85%E5%85%B3%E7%B3%BB"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">邻居关系</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E9%82%BB%E5%B1%85"><span class="toc-number">1.2.1.1.1.</span> <span class="toc-text">建立邻居</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%A4%E6%8D%A2"><span class="toc-number">1.2.1.1.2.</span> <span class="toc-text">数据库交换</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8A%A5%E6%96%87%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">报文类型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#DR-BDR"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">DR &amp; BDR</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E8%AE%A1%E7%AE%97"><span class="toc-number">1.2.2.</span> <span class="toc-text">路由计算</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%9F%9F%EF%BC%88Area%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">区域（Area）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OSPF%E8%B7%AF%E7%94%B1%E5%99%A8%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.4.</span> <span class="toc-text">OSPF路由器类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LSA%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.5.</span> <span class="toc-text">LSA类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#LSA%E5%9C%A8%E5%90%84%E5%8C%BA%E5%9F%9F%E4%B8%AD%E7%9A%84%E6%94%AF%E6%8C%81%E6%83%85%E5%86%B5"><span class="toc-number">1.5.1.</span> <span class="toc-text">LSA在各区域中的支持情况</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%AE%9E%E9%AA%8C"><span class="toc-number">1.6.</span> <span class="toc-text">配置实验</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#OSPF%E5%8D%95%E5%8C%BA%E5%9F%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">1.6.1.</span> <span class="toc-text">OSPF单区域配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OSPF%E5%A4%9A%E5%8C%BA%E5%9F%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">1.6.2.</span> <span class="toc-text">OSPF多区域配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OSPF-STUB%E5%8C%BA%E5%9F%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">1.6.3.</span> <span class="toc-text">OSPF STUB区域配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OSFP-NSSA%E5%8C%BA%E5%9F%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">1.6.4.</span> <span class="toc-text">OSFP NSSA区域配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E6%B1%87%E6%80%BB"><span class="toc-number">1.7.</span> <span class="toc-text">路由汇总</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/Router-7/" title="路由器协议与配置（七）"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com - 343865 bandage blonde_hair choker close flowers genshin_impact sarashi shade sketch tattoo underwear yajuu yellow_eyes yoimiya_%28genshin_impact%29.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="路由器协议与配置（七）"/></a><div class="content"><a class="title" href="/2023/09/25/Router-7/" title="路由器协议与配置（七）">路由器协议与配置（七）</a><time datetime="2023-09-25T11:33:04.000Z" title="发表于 2023-09-25 19:33:04">2023-09-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/Router-6/" title="路由器协议与配置（六）"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20342260%20amane_kanata%20angel%20boots%20bow%20chihiro_ayaka%20computer%20game_console%20garter%20gray_hair%20halo%20hololive%20kneehighs%20purple_eyes%20short_hair%20skirt%20socks%20wings.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="路由器协议与配置（六）"/></a><div class="content"><a class="title" href="/2023/09/25/Router-6/" title="路由器协议与配置（六）">路由器协议与配置（六）</a><time datetime="2023-09-25T11:31:07.000Z" title="发表于 2023-09-25 19:31:07">2023-09-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/Router-5/" title="路由器协议与配置（五）"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_91458860_20220322_003350.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="路由器协议与配置（五）"/></a><div class="content"><a class="title" href="/2023/09/25/Router-5/" title="路由器协议与配置（五）">路由器协议与配置（五）</a><time datetime="2023-09-25T11:28:55.000Z" title="发表于 2023-09-25 19:28:55">2023-09-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/Router-4/" title="路由器协议与配置（四）"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_91501751_20220221_134455.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="路由器协议与配置（四）"/></a><div class="content"><a class="title" href="/2023/09/25/Router-4/" title="路由器协议与配置（四）">路由器协议与配置（四）</a><time datetime="2023-09-25T11:25:25.000Z" title="发表于 2023-09-25 19:25:25">2023-09-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/Router-3/" title="路由器协议与配置（三）"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_97032057_20230730_145910.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="路由器协议与配置（三）"/></a><div class="content"><a class="title" href="/2023/09/25/Router-3/" title="路由器协议与配置（三）">路由器协议与配置（三）</a><time datetime="2023-09-25T11:21:37.000Z" title="发表于 2023-09-25 19:21:37">2023-09-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By 夏梦</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

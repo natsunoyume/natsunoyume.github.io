@@ -1,0 +1,605 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>路由器协议与配置（三） | 夏梦の小屋</title><meta name="author" content="夏梦"><meta name="copyright" content="夏梦"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="DHCP动态主机设置协议（Dynamic Host Configuration Protocol，DHCP），用于IP网络的网络协议，位于OSI模型的应用层，使用UDP协议工作，主要有两个用途：  用于内部网或网络服务供应商自动分配IP地址给用户 用于内部网管理员对所有电脑作中央管理  分配IP地址方式 手工配置：手动配置是指管理员手动给客户端配置一个特定的IP地址  自动配置：自动配置是指服务器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="路由器协议与配置（三）">
+<meta property="og:url" content="https://github.com/natsunoyume/natsunoyume.github.io/2023/09/25/Router-3/index.html">
+<meta property="og:site_name" content="夏梦の小屋">
+<meta property="og:description" content="DHCP动态主机设置协议（Dynamic Host Configuration Protocol，DHCP），用于IP网络的网络协议，位于OSI模型的应用层，使用UDP协议工作，主要有两个用途：  用于内部网或网络服务供应商自动分配IP地址给用户 用于内部网管理员对所有电脑作中央管理  分配IP地址方式 手工配置：手动配置是指管理员手动给客户端配置一个特定的IP地址  自动配置：自动配置是指服务器">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_97032057_20230730_145910.jpg">
+<meta property="article:published_time" content="2023-09-25T11:21:37.000Z">
+<meta property="article:modified_time" content="2023-09-25T11:48:37.627Z">
+<meta property="article:author" content="夏梦">
+<meta property="article:tag" content="网络">
+<meta property="article:tag" content="路由器">
+<meta property="article:tag" content="DHCP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_97032057_20230730_145910.jpg"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/natsunoyume/Image/Web/favicon.png"><link rel="canonical" href="https://github.com/natsunoyume/natsunoyume.github.io/2023/09/25/Router-3/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '路由器协议与配置（三）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-09-25 19:48:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/Web/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_97032057_20230730_145910.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="夏梦の小屋"><span class="site-name">夏梦の小屋</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">路由器协议与配置（三）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-09-25T11:21:37.000Z" title="发表于 2023-09-25 19:21:37">2023-09-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-09-25T11:48:37.627Z" title="更新于 2023-09-25 19:48:37">2023-09-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="路由器协议与配置（三）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="DHCP"><a href="#DHCP" class="headerlink" title="DHCP"></a>DHCP</h2><p>动态主机设置协议（Dynamic Host Configuration Protocol，DHCP），用于IP网络的网络协议，位于OSI模型的应用层，使用UDP协议工作，主要有两个用途：</p>
+<ul>
+<li>用于内部网或网络服务供应商自动分配IP地址给用户</li>
+<li>用于内部网管理员对所有电脑作中央管理</li>
+</ul>
+<h3 id="分配IP地址方式"><a href="#分配IP地址方式" class="headerlink" title="分配IP地址方式"></a>分配IP地址方式</h3><ul>
+<li><p>手工配置：手动配置是指管理员手动给客户端配置一个特定的IP地址</p>
+</li>
+<li><p>自动配置：自动配置是指服务器为第一次链接的客户端分配一个永久地址</p>
+</li>
+<li><p>动态配置：动态配置是指服务器暂时分配一个IP地址给客户端，配合租约来管理分配的IP地址</p>
+</li>
+</ul>
+<h3 id="为什么需要DHCP"><a href="#为什么需要DHCP" class="headerlink" title="为什么需要DHCP"></a>为什么需要DHCP</h3><p>当局域网中存在大量主机时，如果就行手动配置IP地址则工作量巨大，而且配置时容易导致IP地址冲突等错误。而DHCP可以为网络终端动态分配IP地址，解决了手工配置IP地址时的各种问题。</p>
+<h3 id="DHCP角色"><a href="#DHCP角色" class="headerlink" title="DHCP角色"></a>DHCP角色</h3><ul>
+<li>DHCP服务器：负责接收DHCP客户端的请求，负责从地址池中选择IP地址分配至DHCP客户端</li>
+<li>DHCP客户端：发送DHCP请求报文，通过DHCP协议请求获取IP地址等网络参数的设备</li>
+<li>DHCP中继：负责转发DHCP服务器和DHCP客户端之间的DHCP报文，协助DHCP服务器向DHCP客户端动态分配网络参数的设备</li>
+</ul>
+<h4 id="地址池"><a href="#地址池" class="headerlink" title="地址池"></a>地址池</h4><p>地址池指的是DHCP服务器可以为客户端分配的所有IP地址的集合。除IP地址外，地址池内还可以配置租期、子网掩码、默认网关等网络参数。在DHCP服务器为客户端分配IP地址时，这些网络参数也一并分配给客户端。</p>
+<ul>
+<li>基于接口方式的地址池：在DHCP服务器与客户端相连的接口上配置IP地址，地址池是跟此接口地址所属同一网段的IP地址，且地址池中地址只能分配给此接口下的客户端。这种配置方式简单，仅适用于DHCP服务器与客户端在同一个网段的场景。</li>
+<li>基于全局方式的地址池：在系统视图下创建指定网段的地址池，且地址池中地址可以分配给设备所有接口下的客户端。当DHCP服务器与客户端不在同一个网段时，需要部署DHCP中继。</li>
+</ul>
+<h4 id="租期"><a href="#租期" class="headerlink" title="租期"></a>租期</h4><p>DHCP服务器给每个分配给客户端的IP地址定义一个使用期限，该使用期限被称为租期。在租期到期前，DHCP客户端如果仍需要使用该IP地址，可以请求延长租期；如果不需要，可以主动释放该IP地址。在没有其他空闲地址可用的情况下，DHCP服务器会把客户端主动释放的IP地址分配给其他客户端。</p>
+<h3 id="DHCP工作原理"><a href="#DHCP工作原理" class="headerlink" title="DHCP工作原理"></a>DHCP工作原理</h3><p>DHCP动态获取IP地址的过程主要分为发现阶段、提供阶段、选择阶段、确认阶段四个阶段。</p>
+<ul>
+<li>发现阶段（DISCOVER）：DHCP客户端在局域网内以广播的方式发起一个DHCP Discover包，目的是在子网络中发现能够给DHCP客户端提供IP地址的DHCP服务器。</li>
+<li>提供阶段（OFFER）：DHCP服务器接受到Discover包之后，通过发送DHCP offer包给DHCP客户端应答，主要是告知DHCP客户端可以提供IP地址，以及相应的IP地址租约信息和其他配置信息也会在其中。</li>
+<li>选择阶段（REQUEST）：在DHCP客户端可能会接受到多个offer包，通常DHCP客户端只会接受收到的第一个DHCP offer报文，然后DHCP客户端就会以广播的方式发送一个DHCP request报文请求分配IP地址。</li>
+<li>确认阶段（Acknowledge，ACK）：DHCP服务器在收到DHCP request报文之后，会判断”option”字段的serverIP地址是否是自己的IP地址，如果符合分配IP地址的条件，就会给DHCP客户端发送一个DHCP ACK包，如果不满足就发挥发送一个DHCP NAK 包。<ul>
+<li>DHCP NAK：服务器回复客户端，客户端要求的IP不能被分配。</li>
+</ul>
+</li>
+<li>续约租期<ul>
+<li>当租期达到50%时，DHCP客户端会自动以单播的方式向DHCP服务器发送DHCP REQUEST报文，请求更新IP地址租期。如果收到DHCP服务器回应的DHCP ACK报文，则租期更新成功（即租期从0开始计算）；如果收到DHCP NAK报文，则重新发送DHCP DISCOVER报文请求新的IP地址。</li>
+<li>当租期达到87.5%时，如果仍未收到DHCP服务器的应答，DHCP客户端会自动以广播的方式向DHCP服务器发送DHCP REQUEST报文，请求更新IP地址租期。如果收到DHCP服务器回应的DHCP ACK报文，则租期更新成功（即租期从0开始计算）；如果收到DHCP NAK报文，则重新发送DHCP DISCOVER报文请求新的IP地址。</li>
+<li>如果租期时间到时都没有收到服务器的回应，客户端停止使用此IP地址，重新发送DHCP DISCOVER报文请求新的IP地址。</li>
+</ul>
+</li>
+<li>释放阶段（RELEASE）：DHCP客户端向DHCP服务器发送一个请求以释放DHCP资源，并注销其IP地址。</li>
+</ul>
+<h3 id="配置实验"><a href="#配置实验" class="headerlink" title="配置实验"></a>配置实验</h3><h4 id="全局模式"><a href="#全局模式" class="headerlink" title="全局模式"></a>全局模式</h4><ul>
+<li><p>全局模式DHCP的配置<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020329.jpg"></p>
+</li>
+<li><p>路由器的基础配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[Huawei]sysname dhcp</span><br><span class="line">[dhcp]interface g0/0/0</span><br><span class="line">[dhcp-GigabitEthernet0/0/0]ip address 192.168.1.254 24</span><br><span class="line">[dhcp-GigabitEthernet0/0/0]quit</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>基于全局的DHCP配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[dhcp]dhcp enable</span><br><span class="line">[dhcp]ip pool ntd                             </span><br><span class="line">[dhcp-ip-pool-ntd]network 192.168.1.0 mask 24</span><br><span class="line">[dhcp-ip-pool-ntd]gateway-list 192.168.1.254</span><br><span class="line">[dhcp-ip-pool-ntd]dns-list 8.8.8.8</span><br><span class="line">[dhcp-ip-pool-ntd]lease day 0 hour 1 minute 30     \\租期时间为1个小时30分钟</span><br><span class="line">[dhcp-ip-pool-ntd]excluded-ip-address 192.168.1.240 192.168.1.254</span><br><span class="line"></span><br><span class="line">[dhcp]interface g0/0/0</span><br><span class="line">[dhcp-GigabitEthernet0/0/0]ip address 192.168.1.254 24</span><br><span class="line">[dhcp-GigabitEthernet0/0/0]dhcp select global</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>最后在客户端获取IP地址</p>
+<ul>
+<li><p>在PC机上点DHCP获取IP地址：<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020330.jpg"></p>
+</li>
+<li><p>在pc机上执行：<code>ipconfig</code>   查看</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02g/020331.jpg"></p>
+<ul>
+<li><p>在pc机上执行：<code>ipconfig /renew</code>  更新IP地址<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020332.jpg"></p>
+</li>
+<li><p>在pc机上执行：<code>ipconfig /release</code>  释放IP地址<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020333.jpg"></p>
+</li>
+<li><p>抓包查看DHCP的报文：<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020334.jpg"></p>
+<ul>
+<li>第一报文：DHCP客户端广播的方式寻找HDCP服务器</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020335.jpg"></p>
+<ul>
+<li><p>第二报文：DHCP服务器给HDCP客户端回应（单播方式）<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020336.jpg"></p>
+</li>
+<li><p>第三报文：DHCP客户端广播的方式向HDCP服务器请求租用IP地址<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020337.jpg"></p>
+</li>
+<li><p>第三报文：DHCP服务器给HDCP客户端分配地址（单播方式）<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020338.jpg"></p>
+</li>
+</ul>
+<h4 id="中继模式"><a href="#中继模式" class="headerlink" title="中继模式"></a>中继模式</h4><p>中继路由器的一个端口在客户端所在的广播域，另外一个端口在DHCP服务器所在的广播域，让中继路由器主动接收客户端的DHCP discover数据包，然后由中继路由器代替客户机向DHCP服务器申请IP地址，得到地址后，再把这个地址交给客户端，这台服务器称之为DHCP中继代理服务器</p>
+<ul>
+<li><p>DHCP中继服务器的配置<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020339.jpg"></p>
+</li>
+<li><p>交换机的配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[Huawei]sysname sw1</span><br><span class="line">[sw2]vlan 10</span><br><span class="line"></span><br><span class="line">[sw2]port-group group-member g0/0/1 g0/0/2</span><br><span class="line">[sw2-port-group]port link-type access </span><br><span class="line">[sw2-port-group]port default vlan 10</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置IP地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[R2]interface GigabitEthernet 0/0/0    </span><br><span class="line">[R2-GigabitEthernet0/0/0]ip address 192.168.1.254 24</span><br><span class="line">[R2]interface GigabitEthernet 0/0/1    </span><br><span class="line">[R2-GigabitEthernet0/0/1]ip address 192.168.2.254 24</span><br><span class="line"></span><br><span class="line">[dhcp]interface GigabitEthernet 0/0/0    </span><br><span class="line">[dhcp-GigabitEthernet0/0/0]ip address 192.168.2.1 24</span><br><span class="line">[dhcp]ip route-static 192.168.1.0 24 192.168.2.254  \\静态路由的配置</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置全局模式 R3 DHCP服务器 路由器的配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[dhcp]dhcp enable    </span><br><span class="line">[dhcp]ip pool p1           </span><br><span class="line">[dhcp-ip-pool-p1]network 192.168.1.0 mask 24 </span><br><span class="line">\\因为我们的客户端是1.0网段的，所以我们在分配网段的时候地址池要配置1.0网段。客户端在发送请求的时候会包含他的网段的信息</span><br><span class="line">[dhcp-ip-pool-p1]gateway-list 192.168.1.254</span><br><span class="line">\\网关这里千万不要指定错了，指定的网关应该是中继的网关</span><br><span class="line">[dhcp-ip-pool-p1]dns-list 8.8.8.8      </span><br><span class="line">[dhcp]interface G0/0/0</span><br><span class="line">[dhcp-GigabitEthernet0/0/0]dhcp select global</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在客户端查看一下IP地址是否可以获取成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PC&gt;ipconfig  </span><br><span class="line">PC&gt;ipconfig /renew  \\重新获得IP地址</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>客户端他现在肯定是没有IP的，因为我们现在DHCP的数据包只能到了中继这里，所以客户端无法获取。我们需要去配置中继代理服务器。</p>
+</blockquote>
+</li>
+<li><p>给R2 配置中继代理服务器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[R2]dhcp enable </span><br><span class="line">[R2]interface g0/0/0  \\要配置跟客户端相连接的接口</span><br><span class="line">[R2-GigabitEthernet0/0/0]dhcp select relay</span><br><span class="line">[R2-GigabitEthernet0/0/0]dhcp relay server-ip 192.168.2.1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：IP地址指定的是DHCP服务器的地址，千万不要填写错误了！</p>
+</blockquote>
+</li>
+<li><p>在路由器的R2上抓包 G0&#x2F;0&#x2F;0接口查看是DHCP的报文<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020340.jpg"></p>
+</li>
+<li><p>在R2上抓包G0&#x2F;0&#x2F;1接口查看DHCP的报文<br><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020341.jpg"></p>
+</li>
+<li><p>清空重新获取IP地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PC&gt;ipconfig /release</span><br><span class="line">PC&gt;ipconfig /renew  \\重新获得IP地址</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="三层交换机"><a href="#三层交换机" class="headerlink" title="三层交换机"></a>三层交换机</h4><ul>
+<li><p><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/02/020342.jpg"></p>
+</li>
+<li><p>交换机SW3的配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[sw3]vlan batch 10 20</span><br><span class="line">[sw3]port-group group-member e0/0/1 e0/0/2 </span><br><span class="line">[sw3-port-group]port link-type access</span><br><span class="line">[sw3-port-group]port default vlan 20</span><br><span class="line"></span><br><span class="line">[sw3]interface g0/0/2 </span><br><span class="line">[sw3-GigabitEthernet0/0/2]port link-type trunk  </span><br><span class="line">[sw3-GigabitEthernet0/0/2]port trunk allow-pass vlan all </span><br><span class="line">[sw3-GigabitEthernet0/0/2]quit      </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>交换机SW2的配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[sw2]vlan batch 10 20  </span><br><span class="line">[sw2]port-group group-member e0/0/1 e0/0/2</span><br><span class="line">[sw2-port-group]port link-type access  </span><br><span class="line">[sw2-port-group]port default vlan 10</span><br><span class="line"></span><br><span class="line">[sw2]interface g0/0/1 </span><br><span class="line">[sw2-GigabitEthernet0/0/1]port link-type trunk </span><br><span class="line">[sw2-GigabitEthernet0/0/1]port trunk allow-pass vlan all</span><br><span class="line">[sw2-GigabitEthernet0/0/1]quit </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>三层交换机SW1的网关配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[dhcp]int vlanif 10          </span><br><span class="line">[dhc-Vlanif10]ip add 192.168.10.254 24            </span><br><span class="line">          </span><br><span class="line">[dhcp]int vlanif 20                           </span><br><span class="line">[dhc-Vlanif20]ip add 192.168.20.254 24     </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>三层交换机dhcp的配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[Huawei]sysname dhcp</span><br><span class="line">[dhcp]vlan batch 10 20  </span><br><span class="line">[dhcp]port-group 1  </span><br><span class="line">[dhcp-port-group-1]group-member g0/0/1 g0/0/2</span><br><span class="line">[dhcp-port-group-1]port link-type trunk </span><br><span class="line">[dhcp-port-group-1]port trunk allow-pass vlan all </span><br><span class="line">[dhcp]dhcp enable   </span><br><span class="line">[dhcp]ip pool p1                               </span><br><span class="line">[dhcp-ip-pool-p1]network 192.168.10.0 mask 24</span><br><span class="line">[dhcp-ip-pool-p1]gateway-list192.168.10.254</span><br><span class="line">[dhcp-ip-pool-p1]dns-list 10.10.10.10    </span><br><span class="line">[dhcp-ip-pool-p1]lease day 8   </span><br><span class="line"></span><br><span class="line">[dhcp]ip pool p2                            </span><br><span class="line">[dhcp-ip-pool-p2]network 192.168.20.0 mask 24</span><br><span class="line">[dhcp-ip-pool-p2]gateway-list192.168.20.254</span><br><span class="line">[dhcp-ip-pool-p2]dns-list 20.20.20.20        </span><br><span class="line">[dhcp-ip-pool-p2]lease day 8  </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如何删除地址池</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[dhcp]undo ip pool p1                            </span><br><span class="line">[dhcp-ip-pool-p1]undo dns-list 20.20.20.20        </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置接口为全局模式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[dhcp]int vlanif 10                            </span><br><span class="line">[dhc-Vlanif10]dhcp select global   </span><br><span class="line">[dhcp]int vlanif 20                            </span><br><span class="line">[dhc-Vlanif20]dhcp select global   </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>清空重新获取IP地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PC&gt;ipconfig /release</span><br><span class="line">PC&gt;ipconfig /renew  \\重新获得IP地址</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="子网划分"><a href="#子网划分" class="headerlink" title="子网划分"></a>子网划分</h2><p>网络位向主机位借位，将大的网络划分成小的网络</p>
+<ul>
+<li><p>优点</p>
+<ul>
+<li>节省IP地址，减少IP地址浪费</li>
+<li>实现网络设备编址的层次化需求</li>
+</ul>
+</li>
+<li><p>将 <code>192.168.1.0 /24</code> 划分成2个小的网段</p>
+<ul>
+<li>第一子网  范围  0-127</li>
+<li>第二子网  范围  128-255</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">|---------------------------------------------|</span><br><span class="line">0                                            255</span><br><span class="line">|----------------------|----------------------|</span><br><span class="line">0                     128                    255</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">192.168.1.0 /24        11000000.10101000.00000001.00000000</span><br><span class="line">255.255.255.0          11111111.11111111.11111111.00000000  /24</span><br><span class="line">192.168.1.0 /25        11000000.10101000.00000001.0  0000000</span><br><span class="line">192.168.1.128 /25      11000000.10101000.00000001.1  0000000</span><br><span class="line">255.255.255.128        11111111.11111111.11111111.1  0000000  /25</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>计算子网数量：假设向主机位借N位,充当子网位</p>
+<ul>
+<li>子网数量&#x3D;2^N</li>
+</ul>
+</li>
+<li><p>计算每个子网的可用主机数：假设主机位为M 位</p>
+<ul>
+<li>可用主机数&#x3D;2^M -2</li>
+</ul>
+</li>
+<li><p>网络部分由24 增加了2位 &#x2F;26，计算子网数量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">192.168.100.0 /26</span><br><span class="line">192.168.100.0 /26      0-63        1-62</span><br><span class="line">192.168.100.64 /26     64-127      65-126</span><br><span class="line">192.168.100.128 /26    128-191     129-190</span><br><span class="line">192.168.100.192 /26    192-255     193-254</span><br></pre></td></tr></table></figure></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">128       64        32        16         8         4         2         1</span><br><span class="line">2^7       2^6       2^5       2^4       2^3       2^2       2^1       2^0</span><br></pre></td></tr></table></figure>
+
+<p>问题一：<br>主网络   192.168.200.0 &#x2F;24</p>
+<ul>
+<li>划分2个子网，需要向主机位借几位？<br>借1</li>
+<li>划分3个子网，需要向主机位借几位？<br>借2</li>
+<li>划分8个子网，需要向主机位借几位？<br>借3</li>
+<li>划分四个子网，子网掩码是多少？<br><code>/26   255.255.255.192</code></li>
+<li>划分四个子网，每个子网的网段、广播地址、有效地址分别是多少？<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">192.168.200.0 /26         192.168.200.0     192.168.200.63      1-62</span><br><span class="line">192.168.200.64 /26        192.168.200.64    192.168.200.127     65-126</span><br><span class="line">192.168.200.128 /26       192.168.200.128   192.168.200.191     129-190</span><br><span class="line">192.168.200.192 /26       192.168.200.192   192.168.200.255     193-254</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>问题二<br>已知：192.168.100.0 &#x2F;24   如何划分子网？ —–按照主机数量大依次子网划分<br>销售部   90台<br>生产部   50台<br>客服部   26台<br>财务部   15台</p>
+<ul>
+<li><p>销售部90台，可用主机数&#x3D;2^M -2  &gt;&#x3D; 90，M&#x3D;7 （主机位），借1 位<br>  192.168.100.0 0000000 &#x2F;25</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">第一个子网 192.168.100.0 0000000 /25 -&gt;192.168.100.0 /25 -----分配给销售部</span><br><span class="line">第二个子网 192.168.100.1 0000000 /25 -&gt;192.168.100.128 /25 ---未分配</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生产部   50台，可用主机数&#x3D;2^M -2  &gt;&#x3D; 50，M&#x3D;6 （主机位），借2 位<br>  192.168.100.00 000000 &#x2F;26</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">第一个子网 192.168.100.00 000000 /26 -&gt;192.168.100.0 /2 ------分配给销售部</span><br><span class="line">第二个子网 192.168.100.01 000000 /26 -&gt;192.168.100.64 /26 ----分配给销售部</span><br><span class="line">第三个子网 192.168.100.10 000000 /26 -&gt;192.168.100.128 /26 ---分配给生产部</span><br><span class="line">第四个子网 192.168.100.11 000000 /26 -&gt;192.168.100.192 /26 ---未分配</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>客服部   26台，可用主机数&#x3D;2^M -2  &gt;&#x3D; 26，M&#x3D;5 （主机位），借3 位<br>  192.168.100.000 00000 &#x2F;27</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">第一个子网 192.168.100.000 00000 /27 -&gt;192.168.100.0 /27 -----分配给销售部</span><br><span class="line">第二个子网 192.168.100.001 00000 /27 -&gt;192.168.100.32 /27 ----分配给销售部</span><br><span class="line">第三个子网 192.168.100.010 00000 /27 -&gt;192.168.100.64 /27 ----分配给销售部</span><br><span class="line">第四个子网 192.168.100.011 00000 /27 -&gt;192.168.100.96 /27 ----分配给销售部</span><br><span class="line">第五个子网 192.168.100.100 00000 /27 -&gt;192.168.100.128 /27----分配给生产部</span><br><span class="line">第六个子网 192.168.100.101 00000 /27 -&gt;192.168.100.160 /27----分配给生产部</span><br><span class="line">第七个子网 192.168.100.110 00000 /27 -&gt;192.168.100.192 /27 ---分配给客服部</span><br><span class="line">第八个子网 192.168.100.111 00000 /27 -&gt;192.168.100.224 /27 ---未分配</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>财务部   15台，可用主机数&#x3D;2^M -2  &gt;&#x3D; 15，M&#x3D;5 （主机位），借3 位<br>  192.168.100.000 00000 &#x2F;27</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">第一个子网 192.168.100.000 00000 /27 -&gt;192.168.100.0 /27 -----分配给销售部</span><br><span class="line">第二个子网 192.168.100.001 00000 /27 -&gt;192.168.100.32 /27 ----分配给销售部</span><br><span class="line">第三个子网 192.168.100.010 00000 /27 -&gt;192.168.100.64 /27 ----分配给销售部</span><br><span class="line">第四个子网 192.168.100.011 00000 /27 -&gt;192.168.100.96 /27 ----分配给销售部</span><br><span class="line">第五个子网 192.168.100.100 00000 /27 -&gt;192.168.100.128 /27----分配给生产部</span><br><span class="line">第六个子网 192.168.100.101 00000 /27 -&gt;192.168.100.160 /27----分配给生产部</span><br><span class="line">第七个子网 192.168.100.110 00000 /27 -&gt;192.168.100.192 /27 ---分配给客服部</span><br><span class="line">第八个子网 192.168.100.111 00000 /27 -&gt;192.168.100.224 /27 ---分配给财务部</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">192.168.100.0 0000000  /25 -&gt;192.168.100.0 /25     0-127    1-126----分配给销售部</span><br><span class="line">192.168.100.10 000000  /26 -&gt;192.168.100.128 /26   128-191  129-190--分配给生产部</span><br><span class="line">192.168.100.110 00000  /27 -&gt;192.168.100.192 /27   192-223  193-222--分配给客服部</span><br><span class="line">192.168.100.111 00000  /27 -&gt;192.168.100.224 /27   224-255  225-254--分配给财务部</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="CIDR子网表"><a href="#CIDR子网表" class="headerlink" title="CIDR子网表"></a>CIDR子网表</h4><table>
+<thead>
+<tr>
+<th>子网掩码</th>
+<th>CIDR名称</th>
+<th>IP数量</th>
+<th>可用IP数量</th>
+<th>C类网络的数量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0.0.0.0</td>
+<td>&#x2F;0</td>
+<td>4,294,967,296</td>
+<td>4,294,967,294</td>
+<td>33,554,432</td>
+</tr>
+<tr>
+<td>128.0.0.0</td>
+<td>&#x2F;1</td>
+<td>2,147,483,648</td>
+<td>2,147,483,646</td>
+<td>16,777,216</td>
+</tr>
+<tr>
+<td>192.0.0.0</td>
+<td>&#x2F;2</td>
+<td>1,073,741,824</td>
+<td>1,073,741,822</td>
+<td>8,388,608</td>
+</tr>
+<tr>
+<td>224.0.0.0</td>
+<td>&#x2F;3</td>
+<td>536,870,912</td>
+<td>536,870,910</td>
+<td>4,194,304</td>
+</tr>
+<tr>
+<td>240.0.0.0</td>
+<td>&#x2F;4</td>
+<td>268,435,456</td>
+<td>268,435,454</td>
+<td>2,097,152</td>
+</tr>
+<tr>
+<td>248.0.0.0</td>
+<td>&#x2F;5</td>
+<td>134,217,728</td>
+<td>134,217,726</td>
+<td>1,048,576</td>
+</tr>
+<tr>
+<td>252.0.0.0</td>
+<td>&#x2F;6</td>
+<td>67,108,864</td>
+<td>67,108,862</td>
+<td>262,144</td>
+</tr>
+<tr>
+<td>254.0.0.0</td>
+<td>&#x2F;7</td>
+<td>33,554,432</td>
+<td>33,554,430</td>
+<td>131,072</td>
+</tr>
+<tr>
+<td>255.0.0.0</td>
+<td>&#x2F;8</td>
+<td>16,777,216</td>
+<td>16,777,214</td>
+<td>65,536</td>
+</tr>
+<tr>
+<td>255.128.0.0</td>
+<td>&#x2F;9</td>
+<td>8,388,608</td>
+<td>8,388,606</td>
+<td>32,768</td>
+</tr>
+<tr>
+<td>255.192.0.0</td>
+<td>&#x2F;10</td>
+<td>4,194,304</td>
+<td>4,194,302</td>
+<td>16,384</td>
+</tr>
+<tr>
+<td>255.224.0.0</td>
+<td>&#x2F;11</td>
+<td>2,097,152</td>
+<td>2,097,150</td>
+<td>8192</td>
+</tr>
+<tr>
+<td>255.240.0.0</td>
+<td>&#x2F;12</td>
+<td>1,048,576</td>
+<td>1,048,574</td>
+<td>4096</td>
+</tr>
+<tr>
+<td>255.248.0.0</td>
+<td>&#x2F;13</td>
+<td>524,288</td>
+<td>524,286</td>
+<td>2048</td>
+</tr>
+<tr>
+<td>255.252.0.0</td>
+<td>&#x2F;14</td>
+<td>262,144</td>
+<td>262,142</td>
+<td>1024</td>
+</tr>
+<tr>
+<td>255.254.0.0</td>
+<td>&#x2F;15</td>
+<td>131,072</td>
+<td>131,070</td>
+<td>512</td>
+</tr>
+<tr>
+<td>255.255.0.0</td>
+<td>&#x2F;16</td>
+<td>65,536</td>
+<td>65,534</td>
+<td>256</td>
+</tr>
+<tr>
+<td>255.255.128.0</td>
+<td>&#x2F;17</td>
+<td>32,768</td>
+<td>32,766</td>
+<td>128</td>
+</tr>
+<tr>
+<td>255.255.192.0</td>
+<td>&#x2F;18</td>
+<td>16,384</td>
+<td>16,382</td>
+<td>64</td>
+</tr>
+<tr>
+<td>255.255.224.0</td>
+<td>&#x2F;19</td>
+<td>8192</td>
+<td>8190</td>
+<td>32</td>
+</tr>
+<tr>
+<td>255.255.240.0</td>
+<td>&#x2F;20</td>
+<td>4096</td>
+<td>4094</td>
+<td>16</td>
+</tr>
+<tr>
+<td>255.255.248.0</td>
+<td>&#x2F;21</td>
+<td>2048</td>
+<td>2046</td>
+<td>8</td>
+</tr>
+<tr>
+<td>255.255.252.0</td>
+<td>&#x2F;22</td>
+<td>1024</td>
+<td>1022</td>
+<td>4</td>
+</tr>
+<tr>
+<td>255.255.254.0</td>
+<td>&#x2F;23</td>
+<td>512</td>
+<td>510</td>
+<td>2</td>
+</tr>
+<tr>
+<td>255.255.255.0</td>
+<td>&#x2F;24</td>
+<td>256</td>
+<td>254</td>
+<td>1</td>
+</tr>
+<tr>
+<td>255.255.255.128</td>
+<td>&#x2F;25</td>
+<td>128</td>
+<td>126</td>
+<td>1&#x2F;2</td>
+</tr>
+<tr>
+<td>255.255.255.192</td>
+<td>&#x2F;26</td>
+<td>64</td>
+<td>62</td>
+<td>1&#x2F;4</td>
+</tr>
+<tr>
+<td>255.255.255.224</td>
+<td>&#x2F;27</td>
+<td>32</td>
+<td>30</td>
+<td>1&#x2F;8</td>
+</tr>
+<tr>
+<td>255.255.255.240</td>
+<td>&#x2F;28</td>
+<td>16</td>
+<td>14</td>
+<td>1&#x2F;16</td>
+</tr>
+<tr>
+<td>255.255.255.248</td>
+<td>&#x2F;29</td>
+<td>8</td>
+<td>6</td>
+<td>1&#x2F;32</td>
+</tr>
+<tr>
+<td>255.255.255.252</td>
+<td>&#x2F;30</td>
+<td>4</td>
+<td>2</td>
+<td>1&#x2F;64</td>
+</tr>
+<tr>
+<td>255.255.255.254</td>
+<td>&#x2F;31</td>
+<td>2</td>
+<td>0</td>
+<td>1&#x2F;128</td>
+</tr>
+<tr>
+<td>255.255.255.255</td>
+<td>&#x2F;32</td>
+<td>1</td>
+<td>1</td>
+<td>1&#x2F;256</td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://github.com/natsunoyume/natsunoyume.github.io">夏梦</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://github.com/natsunoyume/natsunoyume.github.io/2023/09/25/Router-3/">https://github.com/natsunoyume/natsunoyume.github.io/2023/09/25/Router-3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://github.com/natsunoyume/natsunoyume.github.io" target="_blank">夏梦の小屋</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BD%91%E7%BB%9C/">网络</a><a class="post-meta__tags" href="/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/">路由器</a><a class="post-meta__tags" href="/tags/DHCP/">DHCP</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_97032057_20230730_145910.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/09/25/Router-4/" title="路由器协议与配置（四）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_91501751_20220221_134455.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">路由器协议与配置（四）</div></div></a></div><div class="next-post pull-right"><a href="/2023/09/25/Router-2/" title="路由器协议与配置（二）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20354226%202girls%20blush%20breasts%20brown_hair%20building%20chinese_clothes%20cleavage%20clouds%20food%20kuuus%20leaves%20long_hair%20ponytail%20sky%20twintails%20umbrella%20yellow_eyes.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">路由器协议与配置（二）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/09/25/Router-2/" title="路由器协议与配置（二）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20354226%202girls%20blush%20breasts%20brown_hair%20building%20chinese_clothes%20cleavage%20clouds%20food%20kuuus%20leaves%20long_hair%20ponytail%20sky%20twintails%20umbrella%20yellow_eyes.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-25</div><div class="title">路由器协议与配置（二）</div></div></a></div><div><a href="/2023/09/25/Router-5/" title="路由器协议与配置（五）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_91458860_20220322_003350.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-25</div><div class="title">路由器协议与配置（五）</div></div></a></div><div><a href="/2023/09/25/Router-4/" title="路由器协议与配置（四）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_91501751_20220221_134455.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-25</div><div class="title">路由器协议与配置（四）</div></div></a></div><div><a href="/2023/09/25/Router-7/" title="路由器协议与配置（七）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com - 343865 bandage blonde_hair choker close flowers genshin_impact sarashi shade sketch tattoo underwear yajuu yellow_eyes yoimiya_%28genshin_impact%29.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-25</div><div class="title">路由器协议与配置（七）</div></div></a></div><div><a href="/2023/09/25/Router/" title="路由器协议与配置（一）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20359293%20bell%20cake%20doge_onion%20dress%20elbow_gloves%20elysia_(honkai_impact)%20food%20fruit%20gloves%20honkai_impact%20honkai_(series)%20long_hair%20nopan%20pink_hair%20purple_eyes.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-25</div><div class="title">路由器协议与配置（一）</div></div></a></div><div><a href="/2023/09/25/Router-6/" title="路由器协议与配置（六）"><img class="cover" src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20342260%20amane_kanata%20angel%20boots%20bow%20chihiro_ayaka%20computer%20game_console%20garter%20gray_hair%20halo%20hololive%20kneehighs%20purple_eyes%20short_hair%20skirt%20socks%20wings.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-25</div><div class="title">路由器协议与配置（六）</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/Web/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">夏梦</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" href="https://github.com/natsunoyume"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/natsunoyume" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#DHCP"><span class="toc-number">1.</span> <span class="toc-text">DHCP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E9%85%8DIP%E5%9C%B0%E5%9D%80%E6%96%B9%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">分配IP地址方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81DHCP"><span class="toc-number">1.2.</span> <span class="toc-text">为什么需要DHCP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DHCP%E8%A7%92%E8%89%B2"><span class="toc-number">1.3.</span> <span class="toc-text">DHCP角色</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%B0%E5%9D%80%E6%B1%A0"><span class="toc-number">1.3.1.</span> <span class="toc-text">地址池</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A7%9F%E6%9C%9F"><span class="toc-number">1.3.2.</span> <span class="toc-text">租期</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DHCP%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.4.</span> <span class="toc-text">DHCP工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%AE%9E%E9%AA%8C"><span class="toc-number">1.5.</span> <span class="toc-text">配置实验</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.5.1.</span> <span class="toc-text">全局模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%AD%E7%BB%A7%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.5.2.</span> <span class="toc-text">中继模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="toc-number">1.5.3.</span> <span class="toc-text">三层交换机</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="toc-number">2.</span> <span class="toc-text">子网划分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CIDR%E5%AD%90%E7%BD%91%E8%A1%A8"><span class="toc-number">2.0.1.</span> <span class="toc-text">CIDR子网表</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/Router-7/" title="路由器协议与配置（七）"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com - 343865 bandage blonde_hair choker close flowers genshin_impact sarashi shade sketch tattoo underwear yajuu yellow_eyes yoimiya_%28genshin_impact%29.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="路由器协议与配置（七）"/></a><div class="content"><a class="title" href="/2023/09/25/Router-7/" title="路由器协议与配置（七）">路由器协议与配置（七）</a><time datetime="2023-09-25T11:33:04.000Z" title="发表于 2023-09-25 19:33:04">2023-09-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/Router-6/" title="路由器协议与配置（六）"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/Konachan.com%20-%20342260%20amane_kanata%20angel%20boots%20bow%20chihiro_ayaka%20computer%20game_console%20garter%20gray_hair%20halo%20hololive%20kneehighs%20purple_eyes%20short_hair%20skirt%20socks%20wings.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="路由器协议与配置（六）"/></a><div class="content"><a class="title" href="/2023/09/25/Router-6/" title="路由器协议与配置（六）">路由器协议与配置（六）</a><time datetime="2023-09-25T11:31:07.000Z" title="发表于 2023-09-25 19:31:07">2023-09-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/Router-5/" title="路由器协议与配置（五）"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_91458860_20220322_003350.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="路由器协议与配置（五）"/></a><div class="content"><a class="title" href="/2023/09/25/Router-5/" title="路由器协议与配置（五）">路由器协议与配置（五）</a><time datetime="2023-09-25T11:28:55.000Z" title="发表于 2023-09-25 19:28:55">2023-09-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/Router-4/" title="路由器协议与配置（四）"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_91501751_20220221_134455.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="路由器协议与配置（四）"/></a><div class="content"><a class="title" href="/2023/09/25/Router-4/" title="路由器协议与配置（四）">路由器协议与配置（四）</a><time datetime="2023-09-25T11:25:25.000Z" title="发表于 2023-09-25 19:25:25">2023-09-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/09/25/Router-3/" title="路由器协议与配置（三）"><img src="https://cdn.jsdelivr.net/gh/natsunoyume/Image/img/top-image/illust_97032057_20230730_145910.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="路由器协议与配置（三）"/></a><div class="content"><a class="title" href="/2023/09/25/Router-3/" title="路由器协议与配置（三）">路由器协议与配置（三）</a><time datetime="2023-09-25T11:21:37.000Z" title="发表于 2023-09-25 19:21:37">2023-09-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By 夏梦</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
